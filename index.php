@@ -374,7 +374,7 @@ h5{
     <!-- Banner Ends Here -->
 
     <!-- Featured Starts Here -->
-    <div class="featured-items">
+    <div class="featured-items" style="margin-top:20px">
       <div class="container">
         <div class="row">
           <div class="col-md-12">
