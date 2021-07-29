@@ -118,7 +118,7 @@ function alerta(){
 <style>
 .banner {
 	margin-top: -60px;
-	<?php $imagen='';if($resultado["banner_superior"]==''){$imagen='assets/images/banner-bg.jpg';}else{$imagen='http://localhost:8000/files/users/'.$resultado["id_user"].'/'.$resultado["banner_superior"];}?>
+	<?php $imagen='';if($resultado["banner_superior"]==''){$imagen='assets/images/banner-bg.jpg';}else{$imagen='http://test.cotizaxpress.com:9000/cxp/public/files/users/'.$resultado["id_user"].'/'.$resultado["banner_superior"];}?>
 	background-image: url('<?php echo $imagen;?>');
 	background-size: auto;
 	background-repeat: no-repeat;
@@ -261,7 +261,7 @@ h5{
 
     <!-- Page Content -->
     <!-- Banner Starts Here -->
-    <div class="banner" style="background-color: <?php echo $resultado["color_web"];?>;">
+    <div class="banner">
       <div class="">
         <div class="">
           <div class="offset-md-8 col-md-4">
@@ -380,7 +380,7 @@ h5{
           <div class="col-md-12">
             <div class="">
               
-              <div class="colorxp" align="center"><h2 class="colorxp">Nuestros beneficios</h2></div>
+              <div class="colorxp" align="center"><h2 class="colorxp"><?php echo $resultado["beneficios"];?></h2></div>
             </div>
           </div>
           <div class="col-md-12">
@@ -406,7 +406,7 @@ h5{
 				{
 				?>
 					<div class="featured-item" align="center">
-					  <img src="http://localhost:8000/files/users/1/<?php echo $row['imagen'];?>" alt="<?php echo $row['titulo'];?>">
+					  <img src="http://test.cotizaxpress.com:9000/cxp/public/files/users/1/<?php echo $row['imagen'];?>" alt="<?php echo $row['titulo'];?>">
 					  <h4><?php echo $row['titulo'];?></h4>
 					  <h5><?php echo $row['descripcion'];?></h5>
 					</div>
@@ -437,7 +437,7 @@ h5{
           <div class="col-md-12">
             <div class="">
               
-              <div align="center" style="padding: 20px;"><h2>Lo que piensan nuestros clientes</h2></div>
+              <div align="center" style="padding: 20px;"><h2><?php echo $resultado["opiniones"];?></h2></div>
             </div>
           </div>
           <div class="col-md-12">
@@ -463,7 +463,7 @@ h5{
 				{
 				?>
 					<div class="featured-item-negro" align="center">
-					  <img src="http://localhost:8000/files/users/1/<?php echo $rowb['imagen'];?>" alt="<?php echo $rowb['titulo'];?>">
+					  <img src="http://test.cotizaxpress.com:9000/cxp/public/files/users/1/<?php echo $rowb['imagen'];?>" alt="<?php echo $rowb['titulo'];?>">
 					  <h4><?php echo $rowb['titulo'];?></h4>
 					  <h5><?php echo $rowb['descripcion'];?></h5>
 					</div>
@@ -518,7 +518,7 @@ h5{
         <div class="row">
           <div class="col-md-3">
             <div class="section-heading">
-			<?php $imagen='';if($resultado["logo_quienes_somos"]==''){$imagen='assets/images/logo-inf.jpg';}else{$imagen='http://localhost:8000/files/users/'.$resultado["id_user"].'/'.$resultado["logo_quienes_somos"];}?>
+			<?php $imagen='';if($resultado["logo_quienes_somos"]==''){$imagen='assets/images/logo-inf.jpg';}else{$imagen='http://test.cotizaxpress.com:9000/cxp/public/files/users/'.$resultado["id_user"].'/'.$resultado["logo_quienes_somos"];}?>
               <img src="<?php echo $imagen;?>" alt="">
             </div>
           </div>
