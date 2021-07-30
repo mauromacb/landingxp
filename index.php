@@ -249,7 +249,11 @@ h5{
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
       <div class="container">
-        <a class="navbar-brand" href="#" style="padding:0"><img src="<?php echo $resultado['url'];?>/files/users/<?php echo $resultado['id'];?>/<?php echo $resultado['logo_superior'];?>" alt=""></a>
+        <a class="navbar-brand" href="#" style="padding:0">
+			<img src="<?php echo $resultado['url'];?>/files/users/<?php echo $resultado['id'];?>/<?php echo $resultado['logo_superior'];?>" alt="">
+			<?php $imagen='';if($resultado["logo_superior"]==''){$imagen=$resultado['url'].'/img/logo-sup.jpg';}else{$imagen=$resultado['url'].'/files/users/'.$resultado["id_user"].'/'.$resultado["logo_superior"];}?>
+			<img src="<?php echo $imagen;?>" alt="">
+		</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
