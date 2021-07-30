@@ -250,7 +250,6 @@ h5{
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
       <div class="container">
         <a class="navbar-brand" href="#" style="padding:0">
-			<img src="<?php echo $resultado['url'];?>/files/users/<?php echo $resultado['id'];?>/<?php echo $resultado['logo_superior'];?>" alt="">
 			<?php $imagen='';if($resultado["logo_superior"]==''){$imagen=$resultado['url'].'/img/logo-sup.jpg';}else{$imagen=$resultado['url'].'/files/users/'.$resultado["id_user"].'/'.$resultado["logo_superior"];}?>
 			<img src="<?php echo $imagen;?>" alt="">
 		</a>
