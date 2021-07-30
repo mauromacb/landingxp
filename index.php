@@ -118,7 +118,7 @@ function alerta(){
 <style>
 .banner {
 	margin-top: -60px;
-	<?php $imagen='';if($resultado["banner_superior"]==''){$imagen='assets/images/banner-bg.jpg';}else{$imagen=$resultado["url"].'/files/users/'.$resultado["id_user"].'/'.$resultado["banner_superior"];}?>
+	<?php $imagen='';if($resultado["banner_superior"]==''){$imagen=$resultado['url'].'/img/banner-bg.jpg';}else{$imagen=$resultado["url"].'/files/users/'.$resultado["id_user"].'/'.$resultado["banner_superior"];}?>
 	background-image: url('<?php echo $imagen;?>');
 	background-size: auto;
 	background-repeat: no-repeat;
@@ -518,7 +518,7 @@ h5{
         <div class="row">
           <div class="col-md-3">
             <div class="section-heading">
-			<?php $imagen='';if($resultado["logo_quienes_somos"]==''){$imagen='assets/images/logo-inf.jpg';}else{$imagen=$resultado['url'].'/files/users/'.$resultado["id_user"].'/'.$resultado["logo_quienes_somos"];}?>
+			<?php $imagen='';if($resultado["logo_quienes_somos"]==''){$imagen=$resultado['url'].'/img/logo-inf.jpg';}else{$imagen=$resultado['url'].'/files/users/'.$resultado["id_user"].'/'.$resultado["logo_quienes_somos"];}?>
               <img src="<?php echo $imagen;?>" alt="">
             </div>
           </div>
@@ -548,7 +548,8 @@ h5{
         <div class="row">
           <div class="col-md-12">
             <div class="logo">
-              <img src="<?php echo $resultado["url"];?>/files/users/<?php echo $resultado["id"];?>/<?php echo $resultado["logo_inferior"];?>" alt="">
+			<?php $imagen='';if($resultado["logo_inferior"]==''){$imagen=$resultado['url'].'/img/logo-inf.jpg';}else{$imagen=$resultado['url'].'/files/users/'.$resultado["id_user"].'/'.$resultado["logo_inferior"];}?>
+              <img src="<?php echo $imagen;?>" alt="">
             </div>
           </div>
           <div class="col-md-12">
