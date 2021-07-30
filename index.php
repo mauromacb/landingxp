@@ -118,7 +118,7 @@ function alerta(){
 <style>
 .banner {
 	margin-top: -60px;
-	<?php $imagen='';if($resultado["banner_superior"]==''){$imagen=$resultado['url'].'/img/banner-bg.jpg';}else{$imagen=$resultado["url"].'/files/users/'.$resultado["id_user"].'/'.$resultado["banner_superior"];}?>
+	<?php $imagen='';if($resultado["banner_superior"]==''){$imagen=$resultado['url'].'/img/banner-sup.jpg';}else{$imagen=$resultado["url"].'/files/users/'.$resultado["id_user"].'/'.$resultado["banner_superior"];}?>
 	background-image: url('<?php echo $imagen;?>');
 	background-size: auto;
 	background-repeat: no-repeat;
@@ -551,7 +551,7 @@ h5{
         <div class="row">
           <div class="col-md-12">
             <div class="logo">
-			<?php $imagen='';if($resultado["logo_inferior"]==''){$imagen=$resultado['url'].'/img/logo-inf.jpg';}else{$imagen=$resultado['url'].'/files/users/'.$resultado["id_user"].'/'.$resultado["logo_inferior"];}?>
+			<?php $imagen='';if($resultado["logo_inferior"]==''){$imagen=$resultado['url'].'/img/logo-inferior.jpg';}else{$imagen=$resultado['url'].'/files/users/'.$resultado["id_user"].'/'.$resultado["logo_inferior"];}?>
               <img src="<?php echo $imagen;?>" alt="">
             </div>
           </div>
