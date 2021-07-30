@@ -118,7 +118,7 @@ function alerta(){
 <style>
 .banner {
 	margin-top: -60px;
-	<?php $imagen='';if($resultado["banner_superior"]==''){$imagen='assets/images/banner-bg.jpg';}else{$imagen='http://test.cotizaxpress.com:9000/cxp/public/files/users/'.$resultado["id_user"].'/'.$resultado["banner_superior"];}?>
+	<?php $imagen='';if($resultado["banner_superior"]==''){$imagen='assets/images/banner-bg.jpg';}else{$imagen=$resultado["url"].'/files/users/'.$resultado["id_user"].'/'.$resultado["banner_superior"];}?>
 	background-image: url('<?php echo $imagen;?>');
 	background-size: auto;
 	background-repeat: no-repeat;
@@ -249,7 +249,7 @@ h5{
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
       <div class="container">
-        <a class="navbar-brand" href="#" style="padding:0"><img src="assets/images/header-logo.png" alt=""></a>
+        <a class="navbar-brand" href="#" style="padding:0"><img src="<?php echo $resultado['url'];?>/files/users/<?php echo $resultado['id'];?>/<?php echo $resultado['logo_superior'];?>" alt=""></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -295,7 +295,7 @@ h5{
                       </fieldset>
                     </div>
 					<div class="col-md-12">
-					<label>* Teléfono</label>
+					<label>* Teléfono Celular</label>
                       <fieldset>
                         <input name="telefono" type="text" class="form-control cxpborder" id="email" placeholder="xxx xxx" required="">
                       </fieldset>
@@ -307,7 +307,7 @@ h5{
                       </fieldset>
                     </div>
 					<div class="col-md-12">
-					<label>* Lugar de Circulación</label>
+					<label>* Ciudad de Circulación Principal</label>
                       <fieldset>
                         <input name="lugar" type="text" class="form-control cxpborder" id="email" placeholder="Quito" required="">
                       </fieldset>
@@ -360,7 +360,7 @@ h5{
 			<fieldset>
 				<!-- Button trigger modal -->
 				
-				<button type="button" id="form-submit" class="button col-md-12"  onclick="masDetalles()"><b class="fuente-boton">QUIERO MI COTIZACIÓN</b></button>
+				<button type="submit" id="form-submit" class="button col-md-12" ><b class="fuente-boton">QUIERO MI COTIZACIÓN</b></button>
 			</fieldset>
 			</div>
 			
@@ -380,7 +380,7 @@ h5{
           <div class="col-md-12">
             <div class="">
               
-              <div class="colorxp" align="center"><h2 class="colorxp"><?php echo $resultado["beneficios"];?></h2></div>
+              <div class="colorxp" align="center"><h2 class="colorxp"><?php echo utf8_encode($resultado["beneficios"]);?></h2></div>
             </div>
           </div>
           <div class="col-md-12">
@@ -406,9 +406,9 @@ h5{
 				{
 				?>
 					<div class="featured-item" align="center">
-					  <img src="http://test.cotizaxpress.com:9000/cxp/public/files/users/1/<?php echo $row['imagen'];?>" alt="<?php echo $row['titulo'];?>">
-					  <h4><?php echo $row['titulo'];?></h4>
-					  <h5><?php echo $row['descripcion'];?></h5>
+					  <img src="<?php echo $resultado["url"];?>/files/users/<?php echo $resultado['id'];?>/<?php echo $row['imagen'];?>" alt="<?php echo utf8_encode($row['titulo']);?>">
+					  <h4><?php echo utf8_encode($row['titulo']);?></h4>
+					  <h5><?php echo utf8_encode($row['descripcion']);?></h5>
 					</div>
 				<?php
 				}
@@ -437,7 +437,7 @@ h5{
           <div class="col-md-12">
             <div class="">
               
-              <div align="center" style="padding: 20px;"><h2><?php echo $resultado["opiniones"];?></h2></div>
+              <div align="center" style="padding: 20px;"><h2><?php echo utf8_encode($resultado["opiniones"]);?></h2></div>
             </div>
           </div>
           <div class="col-md-12">
@@ -463,9 +463,9 @@ h5{
 				{
 				?>
 					<div class="featured-item-negro" align="center">
-					  <img src="http://test.cotizaxpress.com:9000/cxp/public/files/users/1/<?php echo $rowb['imagen'];?>" alt="<?php echo $rowb['titulo'];?>">
-					  <h4><?php echo $rowb['titulo'];?></h4>
-					  <h5><?php echo $rowb['descripcion'];?></h5>
+					  <img src="<?php echo $resultado["url"];?>/files/users/<?php echo $resultado['id'];?>/<?php echo $rowb['imagen'];?>" alt="<?php echo utf8_encode($rowb['titulo']);?>">
+					  <h4><?php echo utf8_encode($rowb['titulo']);?></h4>
+					  <h5><?php echo utf8_encode($rowb['descripcion']);?></h5>
 					</div>
 				<?php
 				}
@@ -518,14 +518,14 @@ h5{
         <div class="row">
           <div class="col-md-3">
             <div class="section-heading">
-			<?php $imagen='';if($resultado["logo_quienes_somos"]==''){$imagen='assets/images/logo-inf.jpg';}else{$imagen='http://test.cotizaxpress.com:9000/cxp/public/files/users/'.$resultado["id_user"].'/'.$resultado["logo_quienes_somos"];}?>
+			<?php $imagen='';if($resultado["logo_quienes_somos"]==''){$imagen='assets/images/logo-inf.jpg';}else{$imagen=$resultado['url'].'/files/users/'.$resultado["id_user"].'/'.$resultado["logo_quienes_somos"];}?>
               <img src="<?php echo $imagen;?>" alt="">
             </div>
           </div>
           <div class="col-md-7 offset-md-2">
             <div class="main-content">
 			<h3 style="color:#fff">¿QUIÉNES SOMOS?</h3>
-              <p align="justify" style="color:#000;font-family:'Roboto';font-size:18px"><?php echo $resultado["quienes_somos"];?></p>
+              <p align="justify" style="color:#000;font-family:'Roboto';font-size:18px"><?php echo utf8_encode($resultado["quienes_somos"]);?></p>
             </div>
           </div>
 		  
@@ -548,7 +548,7 @@ h5{
         <div class="row">
           <div class="col-md-12">
             <div class="logo">
-              <img src="assets/images/boot-logo.jpg" alt="">
+              <img src="<?php echo $resultado["url"];?>/files/users/<?php echo $resultado["id"];?>/<?php echo $resultado["logo_inferior"];?>" alt="">
             </div>
           </div>
           <div class="col-md-12">
@@ -557,7 +557,6 @@ h5{
                 <li><a href="<?php echo $resultado["url_facebook"];?>"><i class="fa fa-facebook"></i></a></li>
                 <li><a href="<?php echo $resultado["url_twitter"];?>"><i class="fa fa-twitter"></i></a></li>
                 <li><a href="<?php echo $resultado["url_instagram"];?>"><i class="fa fa-instagram"></i></a></li>
-				<li><a href="<?php echo $resultado["url_linkedin"];?>"><i class="fa fa-linkedin"></i></a></li>
               </ul>
             </div>
           </div>
