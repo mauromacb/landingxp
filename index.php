@@ -521,7 +521,7 @@ h5{
         <div class="row">
           <div class="col-md-3">
             <div class="section-heading">
-			<?php $imagen='';if($resultado["logo_quienes_somos"]==''){$imagen=$resultado['url'].'/img/logo-inf.jpg';}else{$imagen=$resultado['url'].'/files/users/'.$resultado["id_user"].'/'.$resultado["logo_quienes_somos"];}?>
+			<?php $imagen='';if($resultado["logo_quienes_somos"]==''){$imagen=$resultado['url'].'/img/logo-quienes-somos.jpg';}else{$imagen=$resultado['url'].'/files/users/'.$resultado["id_user"].'/'.$resultado["logo_quienes_somos"];}?>
               <img src="<?php echo $imagen;?>" alt="">
             </div>
           </div>
