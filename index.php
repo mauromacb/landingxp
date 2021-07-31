@@ -317,50 +317,7 @@ h5{
                     </div>
                     <div class="col-md-12" style="padding-top:20px">
 					
-					
-					<!-- Modal -->
-			<div class="modal fade" id="masDetalles" tabindex="-1" role="dialog" aria-labelledby="masDetallesLabel" aria-hidden="true">
-			  <div class="modal-dialog" role="document">
-				<div class="modal-content">
-				  <div class="modal-header">
-					<h5 class="modal-title">Ingrese los siguientes detalles</h5>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					  <span aria-hidden="true">&times;</span>
-					</button>
-				  </div>
-				  <div class="modal-body">
-					<div class="col-md-12">
-					<label>Marca Vehìculo</label>
-					  <fieldset>
-						<input name="marca" type="text" class="form-control cxpborder" id="marca" placeholder="Chevrolet" required="">
-					  </fieldset>
-					</div>
-					<div class="col-md-12">
-					<label>Modelo Vehìculo</label>
-					  <fieldset>
-						<input name="modelo" type="text" class="form-control cxpborder" id="modelo" placeholder="Cavalier" required="">
-					  </fieldset>
-					</div>
-					<div class="col-md-12">
-					<label>Año Vehìculo</label>
-					  <fieldset>
-						<input name="anio" type="text" class="form-control cxpborder" id="anio" placeholder="2018" required="">
-					  </fieldset>
-					</div>
-					<div class="col-md-12">
-					<label>Precio Vehìculo</label>
-					  <fieldset>
-						<input name="precio" type="text" class="form-control cxpborder" id="precio" placeholder="18000" required="">
-					  </fieldset>
-					</div>
-				  </div>
-				  <div class="modal-footer">
-					<button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar y continuar</button>
-				  </div>
-				</div>
-			  </div>
-			</div>
-			<fieldset>
+					<fieldset>
 				<!-- Button trigger modal -->
 				
 				<button type="submit" id="form-submit" class="button col-md-12" ><b class="fuente-boton">QUIERO MI COTIZACIÓN</b></button>
