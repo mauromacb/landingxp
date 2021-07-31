@@ -47,8 +47,8 @@ if (!$resultado = $conn->query($sql)) {
 			   $id_cliente=$conn2->insert_id;
 			   //echo $id_cliente;
 			   //inserto cotizaciones_datos_iniciales
-			   $sql = "INSERT INTO `cotizaxp`.`cotizaciones_datos_iniciales`(`id_cliente`, `placa_vehiculo`, `marca_vehiculo`, `modelo_vehiculo`, `anio_fabricacion`, `precio_estimado`, `lugar_circulacion`, `created_at`) 
-														VALUES (".$id_cliente.", '".$_POST['placa']."', '".$_POST['marca']."', '".$_POST['modelo']."', '".$_POST['anio']."', '".$_POST['precio']."', '".$_POST['lugar']."', '".date('Y-m-d H:i:s')."');";
+			   $sql = "INSERT INTO `cotizaxp`.`cotizaciones_datos_iniciales`(`id_cliente`, `placa_vehiculo`, `lugar_circulacion`, `created_at`) 
+														VALUES (".$id_cliente.", '".$_POST['placa']."', '".$_POST['lugar']."', '".date('Y-m-d H:i:s')."');";
 				//echo $sql;
 				if ($conn2->query($sql)) {
 				   $id_cotizacion_datos_iniciales=$conn2->insert_id;
