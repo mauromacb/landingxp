@@ -176,7 +176,7 @@ function alerta(){
 
 /* Featured Style */
 .featured-items {
-	margin-bottom: 70px;
+	margin-bottom: 20px;
 }
 .featured-item-negro {
 	border-radius: 45px;
@@ -349,7 +349,6 @@ h5{
         <div class="row">
           <div class="col-md-12">
             <div class="">
-              
               <div class="colorxp" align="center"><h2 class="colorxp"><?php echo utf8_encode($resultado["beneficios"]);?></h2></div>
             </div>
           </div>
@@ -410,8 +409,7 @@ h5{
         <div class="row">
           <div class="col-md-12">
             <div class="">
-              
-              <div align="center" style="padding: 20px;"><h2><?php echo utf8_encode($resultado["opiniones"]);?></h2></div>
+				<div class="colorxp" align="center"><h2 class="colorxp"><?php echo utf8_encode($resultado["opiniones"]);?></h2></div>
             </div>
           </div>
           <div class="col-md-12">
