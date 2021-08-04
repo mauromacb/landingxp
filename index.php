@@ -128,7 +128,7 @@ function alerta(){
 	background-size: auto;
 	background-repeat: no-repeat;
 	/*padding: 150px 0px;*/
-	background-position: center center;
+	background-position: center left;
 }
 .video-responsive {
 	height: 0;
