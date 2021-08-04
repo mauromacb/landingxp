@@ -466,7 +466,7 @@ h5{
           <div class="col-md-12">
             <div class="">
               
-              <div class="colorxp" align="center" style="    padding: 30px;"><h2 class="colorxp"><?php echo $resultado['titulo_video'];?></h2></div>
+              <div class="colorxp" align="center" style="padding: 20px 0 10px 0;"><h2 class="colorxp"><?php echo $resultado['titulo_video'];?></h2></div>
             </div>
           </div>
           <div class="offset-md-2 col-md-8">              
