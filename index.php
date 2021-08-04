@@ -47,8 +47,8 @@ if (!$resultado = $conn->query($sql)) {
 			   $id_cliente=$conn2->insert_id;
 			   //echo $id_cliente;
 			   //inserto cotizaciones_datos_iniciales
-			   $sql = "INSERT INTO `cotizaxp`.`cotizaciones_datos_iniciales`(`id_cliente`, `placa_vehiculo`, `lugar_circulacion`, `created_at`) 
-														VALUES (".$id_cliente.", '".$_POST['placa']."', '".$_POST['lugar']."', '".date('Y-m-d H:i:s')."');";
+			   $sql = "INSERT INTO `cotizaxp`.`cotizaciones_datos_iniciales`(`id_cliente`, `placa_vehiculo`, `created_at`) 
+														VALUES (".$id_cliente.", '".$_POST['placa']."','".date('Y-m-d H:i:s')."');";
 				//echo $sql;
 				if ($conn2->query($sql)) {
 				   $id_cotizacion_datos_iniciales=$conn2->insert_id;
@@ -110,7 +110,7 @@ function masDetalles() {
 
 function alerta(){
 	swal({
-		title: 'Mensaje enviado exitosamente',
+		title: 'Cotización solicitada exitosamente',
 		icon: 'success',
 	});
 }
@@ -118,7 +118,12 @@ function alerta(){
 <style>
 .banner {
 	margin-top: -60px;
-	<?php $imagen='';if($resultado["banner_superior"]==''){$imagen=$resultado['url'].'/img/banner-sup.jpg';}else{$imagen=$resultado["url"].'/files/users/'.$resultado["id_user"].'/'.$resultado["banner_superior"];}?>
+	
+	<?php if($resultado['banner']==0){?>
+		<?php $imagen='';if($resultado["banner_superior"]==''){$imagen=$resultado['url'].'/img/banner-sup.jpg';}else{$imagen=$resultado["url"].'/files/users/'.$resultado["id_user"].'/'.$resultado["banner_superior"];}?>
+	<?php }else{?>
+		<?php $imagen=$resultado["url"].'/img/banners/'.$resultado["banner_superior"];?>
+	<?php }?>
 	background-image: url('<?php echo $imagen;?>');
 	background-size: auto;
 	background-repeat: no-repeat;
@@ -366,7 +371,11 @@ h5{
 				{
 				?>
 					<div class="featured-item" align="center">
+					<?php if($row['default']==0){?>
 					  <img src="<?php echo $resultado["url"];?>/files/users/<?php echo $resultado['id'];?>/<?php echo $row['imagen'];?>" alt="<?php echo utf8_encode($row['titulo']);?>">
+					<?php }else{?>
+					<img src="<?php echo $resultado["url"];?>/img/beneficio/<?php echo $row['imagen'];?>" alt="<?php echo utf8_encode($row['titulo']);?>">
+					<?php }?>
 					  <h4><?php echo utf8_encode($row['titulo']);?></h4>
 					  <h5><?php echo utf8_encode($row['descripcion']);?></h5>
 					</div>
@@ -423,7 +432,11 @@ h5{
 				{
 				?>
 					<div class="featured-item-negro" align="center">
+					<?php if($rowb['default']==0){?>
 					  <img src="<?php echo $resultado["url"];?>/files/users/<?php echo $resultado['id'];?>/<?php echo $rowb['imagen'];?>" alt="<?php echo utf8_encode($rowb['titulo']);?>">
+					<?php }else{?>
+					<img src="<?php echo $resultado["url"];?>/img/recomendado/<?php echo $rowb['imagen'];?>" alt="<?php echo utf8_encode($rowb['titulo']);?>">
+					<?php }?>					  
 					  <h4><?php echo utf8_encode($rowb['titulo']);?></h4>
 					  <h5><?php echo utf8_encode($rowb['descripcion']);?></h5>
 					</div>
