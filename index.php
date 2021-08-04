@@ -271,8 +271,13 @@ h5{
     <!-- Banner Starts Here -->
     <div class="banner">
       <div class="">
-        <div class="">
-          <div class="offset-md-8 col-md-4">
+        <div class="row">
+			<div class="col-md-6">
+				<div  style="padding: 180px 0 0 100px;">
+					<h1><?php echo utf8_encode($resultado["titulo"]);?></h1>
+				</div>
+			  </div>
+          <div class="offset-md-2 col-md-4">
             <div class="caption">
               <form id="contact" action="index.php" method="post">
                   <div class="row">
