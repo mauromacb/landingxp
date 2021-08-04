@@ -128,7 +128,7 @@ function alerta(){
 	background-size: auto;
 	background-repeat: no-repeat;
 	/*padding: 150px 0px;*/
-	background-position: center left;
+	background-position: center center;
 }
 .video-responsive {
 	height: 0;
@@ -269,7 +269,7 @@ h5{
 
     <!-- Page Content -->
     <!-- Banner Starts Here -->
-    <div class="banner">
+    <div class="banner" style="background-color:<?php echo $resultado["color_web"];?>;">
       <div class="">
         <div class="row">
 			<div class="col-md-6">
