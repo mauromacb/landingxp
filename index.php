@@ -274,7 +274,7 @@ h5{
         <div class="row">
 			<div class="col-md-6">
 				<div  style="padding: 180px 0 0 100px;">
-					<h1><?php echo utf8_encode($resultado["titulo"]);?></h1>
+					<h1 style="color:#fff"><?php echo utf8_encode($resultado["titulo"]);?></h1>
 				</div>
 			  </div>
           <div class="offset-md-2 col-md-4">
