@@ -88,10 +88,7 @@ if (!$resultado = $conn->query($sql)) {
 
 	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 <script>
-$('#masDetalles').on('shown.bs.modal', function () {
-  alert();
-  //$('#myInput').trigger('focus')
-})	
+
 function sleep(milliseconds) {
  var start = new Date().getTime();
  for (var i = 0; i < 1e7; i++) {
@@ -246,11 +243,15 @@ h5{
 	font-size: 18px;
 }
 	</style>
+	
+	<script type="text/javascript" src="assets/whatsapp/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="assets/whatsapp/floating-wpp.min.js"></script>
+	<link rel="stylesheet" href="assets/whatsapp/floating-wpp.min.css">
   </head>
 
   <body <?php echo $onbody;?>>
 
-
+<div id="WAButton" style="z-index:99"></div> 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
       <div class="container">
@@ -270,15 +271,17 @@ h5{
     <!-- Page Content -->
     <!-- Banner Starts Here -->
     <div class="banner" style="background-color:<?php echo $resultado["color_web"];?>;">
-      <div class="">
+      <div class="col">
         <div class="row">
 			<div class="col-md-6">
 				<div  style="padding: 180px 0 0 100px;">
-					<h1 style="color:#fff"><?php echo utf8_encode($resultado["titulo"]);?></h1>
+					<h1 style="color:#fff">
+					<span style="font-size:35px"><?php echo utf8_encode($resultado["titulo"]);?></span><br>
+					<span style="font-size:28px"><?php echo utf8_encode($resultado["titulob"]);?></span></h1>
 				</div>
 			  </div>
-          <div class="offset-md-2 col-md-4">
-            <div class="caption">
+          <div class="col">
+            <div class="caption" style="float:right">
               <form id="contact" action="index.php" method="post">
                   <div class="row">
                     <div class="col-md-12">
@@ -556,11 +559,7 @@ h5{
       </div>
     </div>
     <!-- Sub Footer Ends Here -->
-
-
-    <!-- Bootstrap core JavaScript -->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+ 
 
 
     <!-- Additional Scripts -->
@@ -581,7 +580,21 @@ h5{
 
 
   </body>
+<script type="text/javascript">  
+   $(function () {
+           $('#WAButton').floatingWhatsApp({
+               phone: <?php echo "'".$resultado['whatsapp']."'";?>, //WhatsApp Business phone number
+               headerTitle: 'Chat', //Popup Title
+               popupMessage: 'En que puedo ayudarte?', //Popup Message
+               showPopup: true, //Enables popup display
+               buttonImage: '<img src="whatsapp.svg" />', //Button Image
+               //headerColor: 'crimson', //Custom header color
+               //backgroundColor: 'crimson', //Custom background button color
+               position: "right" //Position: left | right
 
+           });
+       });
+</script> 
 </html>
 <?php
 }else{echo 'No encontrado';}
