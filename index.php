@@ -1,7 +1,7 @@
 <?php
 
 $servername = "localhost";
-$database = "cotizaxp";
+$database = "cotizaxpp";
 $username = "root";
 $password = "";
 // Create connection
@@ -40,21 +40,21 @@ if (!$resultado = $conn->query($sql)) {
 			//variables
 			$id_cliente=null;
 			//inserto cliente
-			$sql = "INSERT INTO `cotizaxp`.`clientes`(`id_user`, `identificacion`, `nombres`, `telefono`, `correo`, `fecha_nacimiento`, `fecha_cotizacion`) 
+			$sql = "INSERT INTO `clientes`(`id_user`, `identificacion`, `nombres`, `telefono`, `correo`, `fecha_nacimiento`, `fecha_cotizacion`) 
 			VALUES (".$resultado['id_user'].", '".$_POST['identificacion']."', '".$_POST['nombres']."', '".$_POST['telefono']."', '".$_POST['email']."', '".$_POST['fecha_nacimiento']."', '".date('Y-m-d H:i:s')."')";
 			//echo $sql;
 			if ($result = $conn2->query($sql)) {
 			   $id_cliente=$conn2->insert_id;
 			   //echo $id_cliente;
 			   //inserto cotizaciones_datos_iniciales
-			   $sql = "INSERT INTO `cotizaxp`.`cotizaciones_datos_iniciales`(`id_cliente`, `placa_vehiculo`, `created_at`) 
-														VALUES (".$id_cliente.", '".$_POST['placa']."','".date('Y-m-d H:i:s')."');";
+			   $sql = "INSERT INTO `cotizaciones_datos_iniciales`(`id_cliente`, `placa_vehiculo`, `lugar_circulacion`, `created_at`) 
+														VALUES (".$id_cliente.", '".$_POST['placa']."', '".$_POST['lugar']."','".date('Y-m-d H:i:s')."');";
 				//echo $sql;
 				if ($conn2->query($sql)) {
 				   $id_cotizacion_datos_iniciales=$conn2->insert_id;
 				   //echo $id_cotizacion_datos_iniciales;
 				   //inserto cotizacion
-				   $sql = "INSERT INTO `cotizaxp`.`cotizaciones`(`id_cliente`, `id_user`, `id_tipo_seguro`, `id_cotizaciones_datos_iniciales`, `fecha_inicial_cotizacion`, `id_etapa_negociacion`, `created_at`) 
+				   $sql = "INSERT INTO `cotizaciones`(`id_cliente`, `id_user`, `id_tipo_seguro`, `id_cotizaciones_datos_iniciales`, `fecha_inicial_cotizacion`, `id_etapa_negociacion`, `created_at`) 
 							VALUES (".$id_cotizacion_datos_iniciales.", '".$resultado['id_user']."', 1, '".$id_cotizacion_datos_iniciales."', '".date('Y-m-d H:i:s')."', 1, '".date('Y-m-d H:i:s')."');";
 				   $conn2->query($sql);
 				   //echo $sql;
@@ -295,7 +295,7 @@ h5{
                     <div class="col-md-12">
 					<label>* Documento de Identidad</label>
                       <fieldset>
-                        <input name="identificacion" type="text" class="form-control cxpborder" id="email" placeholder="1234567890" required="">
+                        <input name="identificacion" type="text" class="form-control cxpborder" id="identificacion" placeholder="1234567890" required="">
                       </fieldset>
                     </div>
                     <div class="col-md-12">
@@ -313,19 +313,19 @@ h5{
 					<div class="col-md-12">
 					<label>* Teléfono Celular</label>
                       <fieldset>
-                        <input name="telefono" type="text" class="form-control cxpborder" id="email" placeholder="xxx xxx" required="">
+                        <input name="telefono" type="text" class="form-control cxpborder" id="telefono" placeholder="xxx xxx" required="">
                       </fieldset>
                     </div>
 					<div class="col-md-12">
 					<label>* Placa del Vehículo</label>
                       <fieldset>
-                        <input name="placa" type="text" class="form-control cxpborder" id="email" placeholder="xxx xxx" required="">
+                        <input name="placa" type="text" class="form-control cxpborder" id="placa" placeholder="xxx xxx" required="">
                       </fieldset>
                     </div>
 					<div class="col-md-12">
 					<label>* Ciudad de Circulación Principal</label>
                       <fieldset>
-                        <input name="lugar" type="text" class="form-control cxpborder" id="email" placeholder="Quito" required="">
+                        <input name="lugar" type="text" class="form-control cxpborder" id="lugar" placeholder="Quito" required="">
                       </fieldset>
                     </div>
                     <div class="col-md-12" style="padding-top:20px">
