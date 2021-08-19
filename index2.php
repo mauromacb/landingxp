@@ -1,4 +1,4 @@
-		<?php
+<?php
 
 $servername = "localhost";
 $database = "cotizasalud";
@@ -242,103 +242,74 @@ function alerta(){
 h5{
 	font-size: 18px;
 }
-
 	</style>
 	
 	<script type="text/javascript" src="assets/whatsapp/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript" src="assets/whatsapp/floating-wpp.min.js"></script>
 	<link rel="stylesheet" href="assets/whatsapp/floating-wpp.min.css">
 	
-<script  >
-	$( document ).ready(function() {
-		var count=0;
-		setInterval(() => {
-			if(count==0){
-				$('#myModal').modal('toggle')
-			}
-			count=count+1;
-		},2000);
-		
-	});
-</script>
-
-
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
   </head>
 
-  <body <?php echo $onbody;?>>	  
-		  
-		  <!-- Modal HTML -->
-        <div id="myModal" class="modal fade">
-            <div class="modal-dialog " style="max-width: 90%;" role="document">
-                <div class="modal-content">
-                    <div class="modal-header text-center">
-					<h2 class="text-center">¿Qué necesitas?</h2>
-                    </div>
-                    <div class="modal-body">
-						<div class="row">
-							<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
-							  <div class="card bg-light d-flex flex-fill">
-								<div class="card-header text-muted border-bottom-0">
-								  Planes individuales
-								</div>
-
-								<div class="card-footer">
-								  <div class="text-center">
-									<img src="assets/images/plan_individual.jpg" class="img-fluid">
-									<hr>
-									<button type="button" class="btn btn-sm btn-primary" style="background-color:<?php echo $resultado["color_web"];?>;" data-dismiss="modal">+ Ingresar</button>
-								  </div>
-								</div>
-							  </div>
-							</div>
-							
-							<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
-							  <div class="card bg-light d-flex flex-fill">
-								<div class="card-header text-muted border-bottom-0">
-								  Planes familiares
-								</div>
-
-								<div class="card-footer">
-								  <div class="text-center">
-								  <img src="assets/images/plan_familiar.jpg" class="img-fluid">
-								  <hr>
-									<a href="index2.php?cl=<?php echo $resultado["codigo"];?>" class="btn btn-sm btn-primary" style="background-color:<?php echo $resultado["color_web"];?>;">
-									  + Ingresar
-									</a>
-								  </div>
-								</div>
-							  </div>
-							</div>
-							
-							<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
-							  <div class="card bg-light d-flex flex-fill">
-								<div class="card-header text-muted border-bottom-0">
-								  Planes para tus empleados
-								</div>
-
-								<div class="card-footer">
-								  <div class="text-center">
-								  <img src="assets/images/plan_empresarial.jpg" class="img-fluid">
-								  <hr>
-									<a href="#" class="btn btn-sm btn-primary" style="background-color:<?php echo $resultado["color_web"];?>;">
-									  + Ingresar
-									</a>
-								  </div>
-								</div>
-							  </div>
-							</div>
-
-						</div>
-                    </div>
-
-                </div>
+  <body <?php echo $onbody;?>>
+<!-- Modal -->
+<div class="modal fade" id="mas-detalles">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content bg-default card card-dark card-outline">
+            <div class="modal-header">
+                <h5 class="modal-title">Ingresar más miembros</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
             </div>
+
+            <form action="#" method="post" >
+                <div class="modal-body row">
+                    <input type="hidden" name="id_cotizacion" value="{{$cotizacion->id}}">
+                    <input type="hidden" name="etapa_negociacion" value="{{$cotizacion->etapa_negociaciones->id}}">
+                    <input type="hidden" name="tipo_comentario" value="{{$tipos_cometarios[1]->id}}">
+                    <div class="row col-sm-12">
+					
+					<div class="col-md-12">
+					<label>* Nombre y apellido</label>
+                      <fieldset>
+						<input name="cl" id="cl" type="hidden" value="<?php echo $resultado["codigo"];?>">
+                        <input name="nombres" type="text" class="form-control cxpborder" id="name" placeholder="" required="">
+                      </fieldset>
+                    </div>
+                    <div class="col-md-12">
+					<label>* Fecha de Nacimiento</label>
+                      <fieldset>
+                        <input name="identificacion" type="text" class="form-control cxpborder" id="identificacion" placeholder="1234567890" required="">
+                      </fieldset>
+                    </div>
+                    <div class="col-md-12">
+					<label>* Sexo</label>
+                      <fieldset>
+                        <select name="sexo" id="sexo" class="form-control" required>
+						  <option value="Masculino">Masculino</option>
+						  <option value="Femenino">Femenino</option>
+					  </select>
+                      </fieldset>
+                    </div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-dark" data-dismiss="modal">Cerrar</button>
+					<button class="button btn btn-sm btn-info col-md-6" style="background-color:#3a8bcd">
+						Agregar
+					</button>
+                </div>
+            </form>
         </div>
-		
-		
-		
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- Modal -->
+	
+	
 <div id="WAButton" style="z-index:99"></div> 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
@@ -370,7 +341,7 @@ h5{
 			  </div>
           <div class="col">
             <div class="caption" style="float:right">
-              <form id="contact" action="index.php" method="post">
+              <form id="contact" action="index2.php" method="post">
                   <div class="row">
                     <div class="col-md-12">
 					<h2 align="center"><b>Por favor ingresa la siguiente información</b></h2>
@@ -407,14 +378,14 @@ h5{
 					<div class="col-md-12">
 					<label>* Sexo</label>
                       <fieldset>
-					  <select name="sexo" id="sexo" class="form-control" required>
+                        <select name="sexo" id="sexo" class="form-control" required>
 						  <option value="Masculino">Masculino</option>
 						  <option value="Femenino">Femenino</option>
 					  </select>
                       </fieldset>
                     </div>
 					<div class="col-md-12">
-					<label>EPS (Solo colombia)</label>	
+					<label>EPS (Solo colombia)</label>
                       <fieldset>
                         <input name="lugar" type="text" class="form-control cxpborder" id="eps" placeholder="">
                       </fieldset>
@@ -423,13 +394,20 @@ h5{
 					
 					<fieldset>
 				<!-- Button trigger modal -->
+				<div class="row">
 				
-				<button type="submit" id="form-submit" class="button col-md-12" ><b class="fuente-boton">QUIERO MI COTIZACIÓN</b></button>
+				<button class="button btn btn-sm btn-info col-md-6" data-toggle="modal" data-target="#mas-detalles" style="background-color:#3a8bcd">
+					<b class="fuente-boton">MÁS MIEMBROS</b>
+				</button>
+				<button type="submit" id="form-submit" class="button col-md-6" ><b class="fuente-boton">COTIZAR</b></button>
+				</div>
 			</fieldset>
 			</div>
 			
 		  </div>
 		</form>  
+            
+			  
             </div>
           </div>
         </div>
