@@ -254,7 +254,7 @@ h5{
 		var count=0;
 		setInterval(() => {
 			if(count==0){
-				$('#myModal').modal('toggle')
+				$('#myModal').modal({backdrop: 'static', keyboard: false, show:true})
 			}
 			count=count+1;
 		},2000);
@@ -286,7 +286,7 @@ h5{
 
 								<div class="card-footer">
 								  <div class="text-center">
-									<img src="assets/images/plan_individual.jpg" class="img-fluid">
+									<img src="assets/images/plan_individual.jpg" class="img-fluid rounded">
 									<hr>
 									<button type="button" class="btn btn-sm btn-primary" style="background-color:<?php echo $resultado["color_web"];?>;" data-dismiss="modal">+ Ingresar</button>
 								  </div>
@@ -302,7 +302,7 @@ h5{
 
 								<div class="card-footer">
 								  <div class="text-center">
-								  <img src="assets/images/plan_familiar.jpg" class="img-fluid">
+								  <img src="assets/images/plan_familiar.jpg" class="img-fluid rounded">
 								  <hr>
 									<a href="index2.php?cl=<?php echo $resultado["codigo"];?>" class="btn btn-sm btn-primary" style="background-color:<?php echo $resultado["color_web"];?>;">
 									  + Ingresar
@@ -320,7 +320,7 @@ h5{
 
 								<div class="card-footer">
 								  <div class="text-center">
-								  <img src="assets/images/plan_empresarial.jpg" class="img-fluid">
+								  <img src="assets/images/plan_empresarial.jpg" class="img-fluid rounded">
 								  <hr>
 									<a href="#" class="btn btn-sm btn-primary" style="background-color:<?php echo $resultado["color_web"];?>;">
 									  + Ingresar

@@ -62,7 +62,10 @@ if (!$resultado = $conn->query($sql)) {
 			}
 			//var_dump($_POST);		
 			$onbody='onLoad="alerta()"';
-		}	
+		}
+		if (isset($_GET['md'])==1){
+			echo "entro por get";			
+		}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -111,6 +114,7 @@ function alerta(){
 		icon: 'success',
 	});
 }
+
 </script>
 <style>
 .banner {
@@ -253,62 +257,6 @@ h5{
   </head>
 
   <body <?php echo $onbody;?>>
-<!-- Modal -->
-<div class="modal fade" id="mas-detalles">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content bg-default card card-dark card-outline">
-            <div class="modal-header">
-                <h5 class="modal-title">Ingresar más miembros</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-
-            <form action="#" method="post" >
-                <div class="modal-body row">
-                    <input type="hidden" name="id_cotizacion" value="{{$cotizacion->id}}">
-                    <input type="hidden" name="etapa_negociacion" value="{{$cotizacion->etapa_negociaciones->id}}">
-                    <input type="hidden" name="tipo_comentario" value="{{$tipos_cometarios[1]->id}}">
-                    <div class="row col-sm-12">
-					
-					<div class="col-md-12">
-					<label>* Nombre y apellido</label>
-                      <fieldset>
-						<input name="cl" id="cl" type="hidden" value="<?php echo $resultado["codigo"];?>">
-                        <input name="nombres" type="text" class="form-control cxpborder" id="name" placeholder="" required="">
-                      </fieldset>
-                    </div>
-                    <div class="col-md-12">
-					<label>* Fecha de Nacimiento</label>
-                      <fieldset>
-                        <input name="identificacion" type="text" class="form-control cxpborder" id="identificacion" placeholder="1234567890" required="">
-                      </fieldset>
-                    </div>
-                    <div class="col-md-12">
-					<label>* Sexo</label>
-                      <fieldset>
-                        <select name="sexo" id="sexo" class="form-control" required>
-						  <option value="Masculino">Masculino</option>
-						  <option value="Femenino">Femenino</option>
-					  </select>
-                      </fieldset>
-                    </div>
-                    </div>
-                </div>
-                <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-dark" data-dismiss="modal">Cerrar</button>
-					<button class="button btn btn-sm btn-info col-md-6" style="background-color:#3a8bcd">
-						Agregar
-					</button>
-                </div>
-            </form>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- Modal -->
-	
 	
 <div id="WAButton" style="z-index:99"></div> 
     <!-- Navigation -->
@@ -391,18 +339,19 @@ h5{
                       </fieldset>
                     </div>
                     <div class="col-md-12" style="padding-top:20px">
-					
-					<fieldset>
-				<!-- Button trigger modal -->
-				<div class="row">
-				
-				<button class="button btn btn-sm btn-info col-md-6" data-toggle="modal" data-target="#mas-detalles" style="background-color:#3a8bcd">
-					<b class="fuente-boton">MÁS MIEMBROS</b>
-				</button>
-				<button type="submit" id="form-submit" class="button col-md-6" ><b class="fuente-boton">COTIZAR</b></button>
-				</div>
-			</fieldset>
-			</div>
+						<div id="masdetallesinput">
+							
+						</div>
+						<fieldset>
+							<!-- Button trigger modal -->
+							<div class="row">
+								<button class="button btn btn-sm btn-info col-md-6" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#mas-detalles" style="background-color:#3a8bcd">
+									<b class="fuente-boton">MÁS MIEMBROS</b>
+								</button>
+								<button type="submit" id="form-submit" class="button col-md-6" ><b class="fuente-boton">COTIZAR</b></button>
+							</div>
+						</fieldset>
+					</div>
 			
 		  </div>
 		</form>  
@@ -648,6 +597,62 @@ h5{
     </script>
 
 
+<!-- Modal -->
+<div class="modal fade" id="mas-detalles">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content bg-default card card-dark card-outline">
+            <div class="modal-header">
+                <h5 class="modal-title">Ingresar más miembros</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+			<div class="modal-header">
+                <div id="masdetalles" style="font-size:12px">
+				</div>
+            </div>
+
+            <form name="formularioMasDetalles" id="formularioMasDetalles" enctype="multipart/form-data">
+				<input type="hidden" name="cl" value="<?php echo $codigo;?>">
+                <div class="modal-body row">
+                    <div class="row col-sm-12">
+						<div class="col-md-12">
+						<label>* Nombre y apellido</label>
+						  <fieldset>
+							<input name="nombres" type="text" class="form-control cxpborder" id="nombres" placeholder="" required="">
+						  </fieldset>
+						</div>
+						<div class="col-md-12">
+						<label>* Fecha de Nacimiento</label>
+						  <fieldset>
+							<input name="fecha_nacimiento" type="text" class="form-control cxpborder" id="fecha_nacimiento" required="">
+						  </fieldset>
+						</div>
+						<div class="col-md-12">
+						<label>* Sexo</label>
+						  <fieldset>
+							<select name="sexo" id="sexo" class="form-control" required>
+							  <option value="Masculino">Masculino</option>
+							  <option value="Femenino">Femenino</option>
+						  </select>
+						  </fieldset>
+						</div>
+                    </div>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-dark" data-dismiss="modal">Cerrar</button>
+					<button type="submit" class="button btn btn-sm btn-info col-md-6" style="background-color:#3a8bcd">
+						Agregar
+					</button>
+                </div>
+            </form>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- Modal -->
+
   </body>
 <script type="text/javascript">  
    $(function () {
@@ -663,6 +668,48 @@ h5{
 
            });
        });
+	   
+	   $(function(){
+        $("#formularioMasDetalles").on("submit", function(e) {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            // Cancelamos el evento si se requiere
+            e.preventDefault();
+
+            var type = "POST";
+            var ajaxurl = 'familiar.php?md=1';
+            var formData = new FormData(document.getElementById("formularioMasDetalles"));
+            $.ajax({
+                type: type,
+                url: ajaxurl,
+                dataType: 'json',
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                beforeSend: function () {
+					alert('before');
+                    document.getElementById("masdetalles").innerHTML = "cargando...";
+                },
+            })
+                .done(function (data) {
+					alert('done');
+                    //console.log(data[0].tipo_pago); return false;
+                    //document.getElementById("masdetalles").innerHTML = data;
+					var html='<strong>Nombres: </strong> Mauricio Condor |<strong>Fecha Nacimiento: </strong> 18/09/1987 |<strong>Sexo: </strong> Masculino | <a href="" class="btn btn-outline-danger btn-sm">eliminar</a><hr>';
+					document.getElementById("masdetalles").innerHTML = html;
+                    $("#formularioMasDetalles").trigger("reset");
+
+                })
+                .fail(function (res) {
+                    $(".msg").html(res.b);
+                });
+        });
+    });
 </script> 
 </html>
 <?php
