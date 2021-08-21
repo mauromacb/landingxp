@@ -1,9 +1,5 @@
-		<?php
-
-$servername = "localhost";
-$database = "cotizasalud";
-$username = "root";
-$password = "";
+<?php
+require('config.php');
 // Create connection
 $conn = mysqli_connect($servername, $username, $password, $database);
 // Check connection
@@ -21,7 +17,17 @@ if ($_POST){
 	$codigo=$_GET['cl'];
 }
 $onbody='';
-$sql = "SELECT * FROM empresas WHERE codigo = '$codigo' limit 1";
+
+$sql = "SELECT * FROM sexo;";
+$sexo = $conn->query($sql);
+$option='';
+$option='<select name="sexo" id="sexo" class="form-control" required>';
+while ($fila = mysqli_fetch_array($sexo)){
+	$option=$option.'<option value="'.$fila[0].'">'.$fila[1].'</option>';
+}
+$option=$option.'</select>';
+
+$sql = "SELECT * FROM empresas WHERE codigo = '$codigo' limit 1;";
 if (!$resultado = $conn->query($sql)) {
     // ¡Oh, no! La consulta falló. 
     echo "Lo sentimos, este sitio web está experimentando problemas.";
@@ -40,29 +46,29 @@ if (!$resultado = $conn->query($sql)) {
 			//variables
 			$id_cliente=null;
 			//inserto cliente
-			$sql = "INSERT INTO `clientes`(`id_user`, `identificacion`, `nombres`, `telefono`, `correo`, `fecha_nacimiento`, `fecha_cotizacion`) 
-			VALUES (".$resultado['id_user'].", '".$_POST['identificacion']."', '".$_POST['nombres']."', '".$_POST['telefono']."', '".$_POST['email']."', '".$_POST['fecha_nacimiento']."', '".date('Y-m-d H:i:s')."')";
+			$sql = "INSERT INTO `clientes`(`id_user`, `id_sexo`, `identificacion`, `nombres`, `telefono`, `correo`, `fecha_nacimiento`, `fecha_cotizacion`, `eps`) 
+			VALUES (".$resultado['id_user'].", ".$_POST['sexo'].", '".$_POST['identificacion']."', '".$_POST['nombres']."', '".$_POST['telefono']."', '".$_POST['email']."', '".$_POST['fecha_nacimiento']."', '".date('Y-m-d H:i:s')."', '".$_POST['eps']."');";
 			//echo $sql;
 			if ($result = $conn2->query($sql)) {
 			   $id_cliente=$conn2->insert_id;
 			   //echo $id_cliente;
 			   //inserto cotizaciones_datos_iniciales
-			   $sql = "INSERT INTO `cotizaciones_datos_iniciales`(`id_cliente`, `placa_vehiculo`, `lugar_circulacion`, `created_at`) 
-														VALUES (".$id_cliente.", '".$_POST['placa']."', '".$_POST['lugar']."','".date('Y-m-d H:i:s')."');";
+			   $sql = "INSERT INTO `cotizaciones_datos_iniciales`(`id_cliente`, `created_at`) 
+														VALUES (".$id_cliente.", '".date('Y-m-d H:i:s')."');";
 				//echo $sql;
 				if ($conn2->query($sql)) {
 				   $id_cotizacion_datos_iniciales=$conn2->insert_id;
 				   //echo $id_cotizacion_datos_iniciales;
 				   //inserto cotizacion
 				   $sql = "INSERT INTO `cotizaciones`(`id_cliente`, `id_user`, `id_tipo_seguro`, `id_cotizaciones_datos_iniciales`, `fecha_inicial_cotizacion`, `id_etapa_negociacion`, `created_at`) 
-							VALUES (".$id_cotizacion_datos_iniciales.", '".$resultado['id_user']."', 1, '".$id_cotizacion_datos_iniciales."', '".date('Y-m-d H:i:s')."', 1, '".date('Y-m-d H:i:s')."');";
+							VALUES (".$id_cliente.", ".$resultado['id_user'].", 3	, ".$id_cotizacion_datos_iniciales.", '".date('Y-m-d H:i:s')."', 1, '".date('Y-m-d H:i:s')."');";
 				   $conn2->query($sql);
 				   //echo $sql;
 				}
 			}
 			//var_dump($_POST);		
 			$onbody='onLoad="alerta()"';
-		}	
+		}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -115,12 +121,12 @@ function alerta(){
 <style>
 .banner {
 	margin-top: -60px;
-	
-	<?php if($resultado['banner']==0){?>
-		<?php $imagen='';if($resultado["banner_superior"]==''){$imagen=$resultado['url'].'/img/banner-sup.jpg';}else{$imagen=$resultado["url"].'/files/users/'.$resultado["id_user"].'/'.$resultado["banner_superior"];}?>
-	<?php }else{?>
-		<?php $imagen=$resultado["url"].'/img/banners/'.$resultado["banner_superior"];?>
-	<?php }?>
+<?php 
+if($resultado['banner']==0){
+	$imagen='';if($resultado["banner_superior"]==''){$imagen=$resultado['url'].'/img/banner-sup.jpg';}else{$imagen=$resultado["url"].'/files/users/'.$resultado["id_user"].'/'.$resultado["banner_superior"];}
+}else{
+	$imagen=$resultado["url"].'/img/banners/'.$resultado["banner_superior"];
+}?>
 	background-image: url('<?php echo $imagen;?>');
 	background-size: auto;
 	background-repeat: no-repeat;
@@ -269,73 +275,121 @@ h5{
 
   <body <?php echo $onbody;?>>	  
 		  
-		  <!-- Modal HTML -->
-        <div id="myModal" class="modal fade">
-            <div class="modal-dialog " style="max-width: 90%;" role="document">
-                <div class="modal-content">
-                    <div class="modal-header text-center">
-					<h2 class="text-center">¿Qué necesitas?</h2>
-                    </div>
-                    <div class="modal-body">
-						<div class="row">
-							<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
-							  <div class="card bg-light d-flex flex-fill">
-								<div class="card-header text-muted border-bottom-0">
-								  Planes individuales
-								</div>
+<!-- Modal HTML -->
+<div id="myModal" class="modal fade">
+	<div class="modal-dialog " style="max-width: 90%;" role="document">
+		<div class="modal-content">
+			<div class="modal-header text-center">
+			<h2 class="text-center">¿Qué necesitas?</h2>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+					  <div class="card bg-light d-flex flex-fill">
+						<div class="card-header text-muted border-bottom-0">
+						  Planes individuales
+						</div>
 
-								<div class="card-footer">
-								  <div class="text-center">
-									<img src="assets/images/plan_individual.jpg" class="img-fluid rounded">
-									<hr>
-									<button type="button" class="btn btn-sm btn-primary" style="background-color:<?php echo $resultado["color_web"];?>;" data-dismiss="modal">+ Ingresar</button>
-								  </div>
-								</div>
-							  </div>
-							</div>
-							
-							<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
-							  <div class="card bg-light d-flex flex-fill">
-								<div class="card-header text-muted border-bottom-0">
-								  Planes familiares
-								</div>
+						<div class="card-footer">
+						  <div class="text-center">
+							<img src="assets/images/plan_individual.jpg" class="img-fluid rounded">
+							<hr>
+							<button type="button" class="btn btn-sm btn-primary" style="background-color:<?php echo $resultado["color_web"];?>;" data-dismiss="modal">+ Ingresar</button>
+						  </div>
+						</div>
+					  </div>
+					</div>
 
-								<div class="card-footer">
-								  <div class="text-center">
-								  <img src="assets/images/plan_familiar.jpg" class="img-fluid rounded">
-								  <hr>
-									<a href="index2.php?cl=<?php echo $resultado["codigo"];?>" class="btn btn-sm btn-primary" style="background-color:<?php echo $resultado["color_web"];?>;">
-									  + Ingresar
-									</a>
-								  </div>
-								</div>
-							  </div>
-							</div>
-							
-							<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
-							  <div class="card bg-light d-flex flex-fill">
-								<div class="card-header text-muted border-bottom-0">
-								  Planes para tus empleados
-								</div>
+					<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+					  <div class="card bg-light d-flex flex-fill">
+						<div class="card-header text-muted border-bottom-0">
+						  Planes familiares
+						</div>
 
-								<div class="card-footer">
-								  <div class="text-center">
-								  <img src="assets/images/plan_empresarial.jpg" class="img-fluid rounded">
-								  <hr>
-									<a href="#" class="btn btn-sm btn-primary" style="background-color:<?php echo $resultado["color_web"];?>;">
-									  + Ingresar
-									</a>
-								  </div>
-								</div>
-							  </div>
-							</div>
+						<div class="card-footer">
+						  <div class="text-center">
+						  <img src="assets/images/plan_familiar.jpg" class="img-fluid rounded">
+						  <hr>
+							<a href="index2.php?cl=<?php echo $resultado["codigo"];?>" class="btn btn-sm btn-primary" style="background-color:<?php echo $resultado["color_web"];?>;">
+							  + Ingresar
+							</a>
+						  </div>
+						</div>
+					  </div>
+					</div>
+					
+					<div class="col-12 col-sm-6 col-md-4 d-flex align-items-stretch flex-column">
+					  <div class="card bg-light d-flex flex-fill">
+						<div class="card-header text-muted border-bottom-0">
+						  Planes para tus empleados
+						</div>
 
+						<div class="card-footer">
+						  <div class="text-center">
+						  <img src="assets/images/plan_empresarial.jpg" class="img-fluid rounded">
+						  <hr>
+							<a href="#modalempleados" data-toggle="modal" class="btn btn-sm btn-primary" style="background-color:<?php echo $resultado["color_web"];?>;">
+							  + Ingresar
+							</a>
+						  </div>
+						</div>
+					  </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Modal HTML -->
+<div id="modalempleados" class="modal fade">
+	<div class="modal-dialog " role="document">
+		<div class="modal-content">
+			<div class="modal-header text-center">
+			<h2 class="text-center">Quiero más información</h2>
+			</div>
+
+			<form name="formularioMasDetalles" id="formularioMasDetalles" enctype="multipart/form-data">
+				<input type="hidden" name="us" value="<?php echo $resultado['id_user'];?>">
+                <div class="modal-body row">
+                    <div class="row col-sm-12">
+						<div class="col-md-12">
+						<label>* Nombre y apellido</label>
+						  <fieldset>
+							<input name="nombres" type="text" class="form-control cxpborder" id="nombres" required="">
+						  </fieldset>
+						</div>
+						<div class="col-md-12">
+						<label>* Email</label>
+						  <fieldset>
+							<input name="email" type="text" class="form-control cxpborder" id="email" required="">
+						  </fieldset>
+						</div>
+						<div class="col-md-12">
+						<label>* Teléfono celular</label>
+						  <fieldset>
+							<input name="telefono" type="text" class="form-control cxpborder" id="telefono" required="">
+						  </fieldset>
+						</div>
+						<div class="col-md-12">
+						<label>* Empresa</label>
+						  <fieldset>
+							<input name="empresa" type="text" class="form-control cxpborder" id="empresa" required="">
+						  </fieldset>
 						</div>
                     </div>
-
                 </div>
-            </div>
-        </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-dark" data-dismiss="modal">Cerrar</button>
+					<button type="submit" class="button btn btn-sm btn-info col-md-4" style="background-color:#3a8bcd">
+						Enviar
+					</button>
+                </div>
+            </form>
+			
+		</div>
+	</div>
+</div>
 		
 		
 		
@@ -389,7 +443,7 @@ h5{
                     <div class="col-md-12">
 					<label>* Fecha de Nacimiento</label>
                       <fieldset>
-                        <input name="fecha_nacimiento" type="date" class="form-control cxpborder" id="subject" required="">
+                        <input name="fecha_nacimiento" type="date" class="form-control cxpborder" id="fecha_nacimiento" required="">
                       </fieldset>
                     </div>
 					<div class="col-md-12">
@@ -407,16 +461,13 @@ h5{
 					<div class="col-md-12">
 					<label>* Sexo</label>
                       <fieldset>
-					  <select name="sexo" id="sexo" class="form-control" required>
-						  <option value="Masculino">Masculino</option>
-						  <option value="Femenino">Femenino</option>
-					  </select>
+						<?php echo $option;?>
                       </fieldset>
                     </div>
 					<div class="col-md-12">
 					<label>EPS (Solo colombia)</label>	
                       <fieldset>
-                        <input name="lugar" type="text" class="form-control cxpborder" id="eps" placeholder="">
+                        <input name="eps" type="text" class="form-control cxpborder" id="eps" placeholder="">
                       </fieldset>
                     </div>
                     <div class="col-md-12" style="padding-top:20px">
@@ -672,19 +723,58 @@ h5{
 
   </body>
 <script type="text/javascript">  
-   $(function () {
-           $('#WAButton').floatingWhatsApp({
-               phone: <?php echo "'".$resultado['whatsapp']."'";?>, //WhatsApp Business phone number
-               headerTitle: 'Chat', //Popup Title
-               popupMessage: 'En que puedo ayudarte?', //Popup Message
-               showPopup: true, //Enables popup display
-               buttonImage: '<img src="whatsapp.svg" />', //Button Image
-               //headerColor: 'crimson', //Custom header color
-               //backgroundColor: 'crimson', //Custom background button color
-               position: "right" //Position: left | right
+   $(function () 
+   {
+	   $('#WAButton').floatingWhatsApp({
+		   phone: <?php echo "'".$resultado['whatsapp']."'";?>, //WhatsApp Business phone number
+		   headerTitle: 'Chat', //Popup Title
+		   popupMessage: 'En que puedo ayudarte?', //Popup Message
+		   showPopup: true, //Enables popup display
+		   buttonImage: '<img src="whatsapp.svg" />', //Button Image
+		   //headerColor: 'crimson', //Custom header color
+		   //backgroundColor: 'crimson', //Custom background button color
+		   position: "right" //Position: left | right
 
-           });
-       });
+	   });
+   });
+   
+   $(function(){
+	$("#formularioMasDetalles").on("submit", function(e) {
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		// Cancelamos el evento si se requiere
+		e.preventDefault();
+		var type = "POST";
+		var ajaxurl = 'data.php?p=pe';
+		var formData = new FormData(document.getElementById("formularioMasDetalles"));
+			$.ajax({
+				type: type,
+				url: ajaxurl,
+				dataType: 'json',
+				data: formData,
+				cache: false,
+				contentType: false,
+				processData: false,
+				beforeSend: function () {
+					swal({
+						title: 'Solicitando cotización...',
+					});
+				},
+			}).done(function (data) {
+				$('#modalempleados').modal('hide');
+				swal({
+					title: 'Cotización solicitada exitosamente',
+					icon: 'success',
+				});
+				$("#formularioMasDetalles").trigger("reset");
+			}).fail(function (res) {
+				$(".msg").html(res.b);
+			});
+		});
+    });
 </script> 
 </html>
 <?php

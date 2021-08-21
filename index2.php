@@ -1,9 +1,5 @@
 <?php
-
-$servername = "localhost";
-$database = "cotizasalud";
-$username = "root";
-$password = "";
+require('config.php');
 // Create connection
 $conn = mysqli_connect($servername, $username, $password, $database);
 // Check connection
@@ -21,50 +17,77 @@ if ($_POST){
 	$codigo=$_GET['cl'];
 }
 $onbody='';
-$sql = "SELECT * FROM empresas WHERE codigo = '$codigo' limit 1";
+
+$sql = "SELECT * FROM sexo;";
+$sexo = $conn->query($sql);
+$option='';
+$option='<select name="sexo" id="sexo" class="form-control" required>';
+while ($fila = mysqli_fetch_array($sexo)){
+	$option=$option.'<option value="'.$fila[0].'">'.$fila[1].'</option>';
+}
+$option=$option.'</select>';
+
+$sql = "SELECT * FROM empresas WHERE codigo = '$codigo' limit 1;";
 if (!$resultado = $conn->query($sql)) {
-    // ¡Oh, no! La consulta falló. 
     echo "Lo sentimos, este sitio web está experimentando problemas.";
-    // De nuevo, no hacer esto en un sitio público, aunque nosotros mostraremos
-    // cómo obtener información del error
-    //echo "Error: La ejecución de la consulta falló debido a: \n";
-    //echo "Query: " . $sql . "\n";
-    //echo "Errno: " . $conn->errno . "\n";
-    //exit;
 	die('Error');
 }else{
 	$resultado = $resultado->fetch_assoc();
 	if($resultado){	
 		//ingreso el resultado del formulario
 		if ($_POST){
+			//var_dump($_POST);exit;
 			//variables
 			$id_cliente=null;
 			//inserto cliente
-			$sql = "INSERT INTO `clientes`(`id_user`, `identificacion`, `nombres`, `telefono`, `correo`, `fecha_nacimiento`, `fecha_cotizacion`) 
-			VALUES (".$resultado['id_user'].", '".$_POST['identificacion']."', '".$_POST['nombres']."', '".$_POST['telefono']."', '".$_POST['email']."', '".$_POST['fecha_nacimiento']."', '".date('Y-m-d H:i:s')."')";
-			//echo $sql;
+			$sql = "INSERT INTO clientes(`id_user`, `id_sexo`, `identificacion`, `nombres`, `telefono`, `correo`, `fecha_nacimiento`, `fecha_cotizacion`, `eps`) 
+			VALUES (".$resultado['id_user'].", ".$_POST['sexo'].", '".$_POST['identificacion']."', '".$_POST['nombres']."', '".$_POST['telefono']."', '".$_POST['email']."', '".$_POST['fecha_nacimiento']."', '".date('Y-m-d H:i:s')."', '".$_POST['eps']."');";
+			echo $sql;
 			if ($result = $conn2->query($sql)) {
 			   $id_cliente=$conn2->insert_id;
 			   //echo $id_cliente;
+			   //var_dump($_POST);
+				//echo "<br><br>";
+				$detalles=json_decode(json_decode(json_encode($_POST["masdetallesinput"][0])));
+				foreach($detalles as $detalle){
+					/*var_dump($detalle[0]);
+					var_dump($detalle[1]);
+					var_dump($detalle[2]);
+					var_dump($detalle[3]);
+					echo "<br><br>";*/
+		
+					$sql="INSERT INTO clientes_adicionales(`id_cliente`, `id_sexo`, `identificacion`, `nombres`, `fecha_nacimiento`, `created_at`) 
+																VALUES (".$id_cliente.", ".$detalle[3].", '".$detalle[1]."', '".$detalle[0]."', '".$detalle[2]."', '".date('Y-m-d H:i:s')."');";
+					if (!$conn2->query($sql)) {
+						echo "Lo sentimos, este sitio web está experimentando problemas.";
+						die('Error al insertar clientes adicionales');
+					}
+				}
 			   //inserto cotizaciones_datos_iniciales
-			   $sql = "INSERT INTO `cotizaciones_datos_iniciales`(`id_cliente`, `placa_vehiculo`, `lugar_circulacion`, `created_at`) 
-														VALUES (".$id_cliente.", '".$_POST['placa']."', '".$_POST['lugar']."','".date('Y-m-d H:i:s')."');";
+			   $sql = "INSERT INTO `cotizaciones_datos_iniciales`(`id_cliente`, `created_at`) 
+														VALUES (".$id_cliente.", '".date('Y-m-d H:i:s')."');";
 				//echo $sql;
 				if ($conn2->query($sql)) {
 				   $id_cotizacion_datos_iniciales=$conn2->insert_id;
 				   //echo $id_cotizacion_datos_iniciales;
 				   //inserto cotizacion
-				   $sql = "INSERT INTO `cotizaciones`(`id_cliente`, `id_user`, `id_tipo_seguro`, `id_cotizaciones_datos_iniciales`, `fecha_inicial_cotizacion`, `id_etapa_negociacion`, `created_at`) 
-							VALUES (".$id_cotizacion_datos_iniciales.", '".$resultado['id_user']."', 1, '".$id_cotizacion_datos_iniciales."', '".date('Y-m-d H:i:s')."', 1, '".date('Y-m-d H:i:s')."');";
-				   $conn2->query($sql);
+				   $sql = "INSERT INTO cotizaciones(`id_cliente`, `id_user`, `id_tipo_seguro`, `id_cotizaciones_datos_iniciales`, `fecha_inicial_cotizacion`, `id_etapa_negociacion`, `created_at`) 
+							VALUES (".$id_cliente.", ".$resultado['id_user'].", 3	, ".$id_cotizacion_datos_iniciales.", '".date('Y-m-d H:i:s')."', 1, '".date('Y-m-d H:i:s')."');";
+				   if (!$conn2->query($sql)) {
+						echo "Lo sentimos, este sitio web está experimentando problemas.";
+						die('Error al insertar cotizacion');
+				   }
 				   //echo $sql;
+				}else{
+					echo "Lo sentimos, este sitio web está experimentando problemas.";
+					die('Error al insertar datos iniciales cotizacion');
 				}
+			}else{
+				echo "Lo sentimos, este sitio web está experimentando problemas.";
+				die('Error al insertar cliente');
 			}
 			//var_dump($_POST);		
 			$onbody='onLoad="alerta()"';
-		}
-		if (isset($_GET['md'])==1){
-			echo "entro por get";			
 		}
 ?>
 <!DOCTYPE html>
@@ -119,12 +142,12 @@ function alerta(){
 <style>
 .banner {
 	margin-top: -60px;
-	
-	<?php if($resultado['banner']==0){?>
-		<?php $imagen='';if($resultado["banner_superior"]==''){$imagen=$resultado['url'].'/img/banner-sup.jpg';}else{$imagen=$resultado["url"].'/files/users/'.$resultado["id_user"].'/'.$resultado["banner_superior"];}?>
-	<?php }else{?>
-		<?php $imagen=$resultado["url"].'/img/banners/'.$resultado["banner_superior"];?>
-	<?php }?>
+<?php 
+if($resultado['banner']==0){
+	$imagen='';if($resultado["banner_superior"]==''){$imagen=$resultado['url'].'/img/banner-sup.jpg';}else{$imagen=$resultado["url"].'/files/users/'.$resultado["id_user"].'/'.$resultado["banner_superior"];}
+}else{
+	$imagen=$resultado["url"].'/img/banners/'.$resultado["banner_superior"];
+}?>
 	background-image: url('<?php echo $imagen;?>');
 	background-size: auto;
 	background-repeat: no-repeat;
@@ -289,13 +312,15 @@ h5{
 			  </div>
           <div class="col">
             <div class="caption" style="float:right">
-              <form id="contact" action="index2.php" method="post">
+              <form name="formularioFamiliar" id="formularioFamiliar" method="post">
                   <div class="row">
                     <div class="col-md-12">
 					<h2 align="center"><b>Por favor ingresa la siguiente información</b></h2>
 					<label>* Nombre y apellido</label>
                       <fieldset>
 						<input name="cl" id="cl" type="hidden" value="<?php echo $resultado["codigo"];?>">
+						<input name="us" id="us" type="hidden" value="<?php echo $resultado['id_user'];?>">
+						<input name="emp" id="emp" type="hidden" value="<?php echo $resultado["id"];?>">
                         <input name="nombres" type="text" class="form-control cxpborder" id="name" placeholder="" required="">
                       </fieldset>
                     </div>
@@ -326,28 +351,25 @@ h5{
 					<div class="col-md-12">
 					<label>* Sexo</label>
                       <fieldset>
-                        <select name="sexo" id="sexo" class="form-control" required>
-						  <option value="Masculino">Masculino</option>
-						  <option value="Femenino">Femenino</option>
-					  </select>
+                        <?php echo $option;?>
                       </fieldset>
                     </div>
 					<div class="col-md-12">
 					<label>EPS (Solo colombia)</label>
                       <fieldset>
-                        <input name="lugar" type="text" class="form-control cxpborder" id="eps" placeholder="">
+                        <input name="eps" type="text" class="form-control cxpborder" id="eps" placeholder="">
                       </fieldset>
                     </div>
                     <div class="col-md-12" style="padding-top:20px">
-						<div id="masdetallesinput">
-							
+						<div id="">
+							<input type="hidden" name="masdetallesinput[]" id="masdetallesinput" value="">
 						</div>
 						<fieldset>
 							<!-- Button trigger modal -->
 							<div class="row">
-								<button class="button btn btn-sm btn-info col-md-6" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#mas-detalles" style="background-color:#3a8bcd">
+								<span class="button btn btn-sm btn-info col-md-6" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#mas-detalles" style="background-color:#3a8bcd">
 									<b class="fuente-boton">MÁS MIEMBROS</b>
-								</button>
+								</span>
 								<button type="submit" id="form-submit" class="button col-md-6" ><b class="fuente-boton">COTIZAR</b></button>
 							</div>
 						</fieldset>
@@ -599,7 +621,7 @@ h5{
 
 <!-- Modal -->
 <div class="modal fade" id="mas-detalles">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-md">
         <div class="modal-content bg-default card card-dark card-outline">
             <div class="modal-header">
                 <h5 class="modal-title">Ingresar más miembros</h5>
@@ -608,7 +630,7 @@ h5{
                 </button>
             </div>
 			<div class="modal-header">
-                <div id="masdetalles" style="font-size:12px">
+                <div id="masdetalles" style="font-size:14px">
 				</div>
             </div>
 
@@ -623,18 +645,21 @@ h5{
 						  </fieldset>
 						</div>
 						<div class="col-md-12">
+						<label>Identificación</label>
+						  <fieldset>
+							<input name="identificacion" type="text" class="form-control cxpborder" id="identificacion" value="">
+						  </fieldset>
+						</div>
+						<div class="col-md-12">
 						<label>* Fecha de Nacimiento</label>
 						  <fieldset>
-							<input name="fecha_nacimiento" type="text" class="form-control cxpborder" id="fecha_nacimiento" required="">
+							<input name="fecha_nacimiento" type="date" class="form-control cxpborder" id="fecha_nacimiento" required="">
 						  </fieldset>
 						</div>
 						<div class="col-md-12">
 						<label>* Sexo</label>
 						  <fieldset>
-							<select name="sexo" id="sexo" class="form-control" required>
-							  <option value="Masculino">Masculino</option>
-							  <option value="Femenino">Femenino</option>
-						  </select>
+							<?php echo $option;?>
 						  </fieldset>
 						</div>
                     </div>
@@ -655,60 +680,137 @@ h5{
 
   </body>
 <script type="text/javascript">  
-   $(function () {
-           $('#WAButton').floatingWhatsApp({
-               phone: <?php echo "'".$resultado['whatsapp']."'";?>, //WhatsApp Business phone number
-               headerTitle: 'Chat', //Popup Title
-               popupMessage: 'En que puedo ayudarte?', //Popup Message
-               showPopup: true, //Enables popup display
-               buttonImage: '<img src="whatsapp.svg" />', //Button Image
-               //headerColor: 'crimson', //Custom header color
-               //backgroundColor: 'crimson', //Custom background button color
-               position: "right" //Position: left | right
+   $(function () 
+   {
+	   $('#WAButton').floatingWhatsApp({
+		   phone: <?php echo "'".$resultado['whatsapp']."'";?>, //WhatsApp Business phone number
+		   headerTitle: 'Chat', //Popup Title
+		   popupMessage: 'En que puedo ayudarte?', //Popup Message
+		   showPopup: true, //Enables popup display
+		   buttonImage: '<img src="whatsapp.svg" />', //Button Image
+		   //headerColor: 'crimson', //Custom header color
+		   //backgroundColor: 'crimson', //Custom background button color
+		   position: "right" //Position: left | right
 
-           });
-       });
-	   
-	   $(function(){
-        $("#formularioMasDetalles").on("submit", function(e) {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-                }
-            });
+	   });
+   });
 
-            // Cancelamos el evento si se requiere
-            e.preventDefault();
+   var html='';//global variable  
+   let arreglo=[];
+   var i=0;
+   $(function(){
+	$("#formularioMasDetalles").on("submit", function(e) {
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		// Cancelamos el evento si se requiere
+		e.preventDefault();
+		var type = "POST";
+		var ajaxurl = 'data.php?p=nm';
+		var formData = new FormData(document.getElementById("formularioMasDetalles"));
+		formData.append("masdetallesinput", document.getElementById("masdetallesinput").value);
+			$.ajax({
+				type: type,
+				url: ajaxurl,
+				dataType: 'json',
+				data: formData,
+				cache: false,
+				contentType: false,
+				processData: false,
+				beforeSend: function () {
+					document.getElementById("masdetalles").innerHTML = "cargando...";
+				},
+			}).done(function (data) {
+				arreglo.push([data.nombres, data.identificacion, data.fecha_nacimiento, data.sexo]);
+				html='';
+				j=0;
+				arregloinput='';
+				for (var valor of arreglo) {
+				  html=html+'<strong> - Nombres: </strong> '+valor[0]+' | <strong>Identicación: </strong> '+valor[1]+' | <strong>Fecha Nacimiento: </strong> '+valor[2]+'  | <strong>Sexo: </strong> '+valor[3]+' | <button class="badge badge-danger right" onclick="eliminarDetalle('+j+')"> <span clas="fa fa-remove">X</span> Eliminar</button><hr>';
+				  j=j+1;
+				}
+				
+				document.getElementById("masdetalles").innerHTML = html;
+				document.getElementById("masdetallesinput").value = JSON.stringify(arreglo);
+				
+				$("#formularioMasDetalles").trigger("reset");
+				i=i+1;
 
-            var type = "POST";
-            var ajaxurl = 'familiar.php?md=1';
-            var formData = new FormData(document.getElementById("formularioMasDetalles"));
-            $.ajax({
-                type: type,
-                url: ajaxurl,
-                dataType: 'json',
-                data: formData,
-                cache: false,
-                contentType: false,
-                processData: false,
-                beforeSend: function () {
-					alert('before');
-                    document.getElementById("masdetalles").innerHTML = "cargando...";
-                },
-            })
-                .done(function (data) {
-					alert('done');
-                    //console.log(data[0].tipo_pago); return false;
-                    //document.getElementById("masdetalles").innerHTML = data;
-					var html='<strong>Nombres: </strong> Mauricio Condor |<strong>Fecha Nacimiento: </strong> 18/09/1987 |<strong>Sexo: </strong> Masculino | <a href="" class="btn btn-outline-danger btn-sm">eliminar</a><hr>';
-					document.getElementById("masdetalles").innerHTML = html;
-                    $("#formularioMasDetalles").trigger("reset");
+			}).fail(function (res) {
+				$(".msg").html(res.b);
+			});
+		});
+    });
+	
+	function eliminarDetalle(i){
+		swal({
+            title: "Seguro que desea eliminar?",
+            text: "Presiona Ok para continuar.",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+		.then((willDelete) => {
+			if (willDelete) {
+				console.dir(arreglo);
+				//delete arreglo[i];
+				arreglo.splice(i,1);
+				console.dir(arreglo);
+				html='';
+				j=0;
+				for (var valor of arreglo) {
+				  //console.dir(valor);
+				  html=html+'<strong> - Nombres: </strong> '+valor[0]+' | <strong>Identicaciòn: </strong> '+valor[1]+' | <strong>Fecha Nacimiento: </strong> '+valor[2]+'  | <strong>Sexo: </strong> '+valor[3]+' | <button class="badge badge-danger right" onclick="eliminarDetalle('+j+')"> <span clas="fa fa-remove">X</span> Eliminar</button><hr>';
+				  j=j+1;
+				}
+				document.getElementById("masdetalles").innerHTML = html;
+				document.getElementById("masdetallesinput").value = JSON.stringify(arreglo);
 
-                })
-                .fail(function (res) {
-                    $(".msg").html(res.b);
-                });
-        });
+			} else {
+				//swal("No realizado");
+			}
+		});
+	
+	}
+	
+	$(function(){
+	$("#formularioFamiliar").on("submit", function(e) {
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		// Cancelamos el evento si se requiere
+		e.preventDefault();
+		var type = "POST";
+		var ajaxurl = 'data.php?p=fam';
+		var formData = new FormData(document.getElementById("formularioFamiliar"));
+			$.ajax({
+				type: type,
+				url: ajaxurl,
+				dataType: 'json',
+				data: formData,
+				cache: false,
+				contentType: false,
+				processData: false,
+				beforeSend: function () {
+					swal({
+						title: 'Solicitando cotización...',
+					});
+				},
+			}).done(function (data) {
+				$('#modalempleados').modal('hide');
+				swal({
+					title: 'Cotización solicitada exitosamente',
+					icon: 'success',
+				});
+				$("#formularioFamiliar").trigger("reset");
+			}).fail(function (res) {
+				$(".msg").html(res.b);
+			});
+		});
     });
 </script> 
 </html>
