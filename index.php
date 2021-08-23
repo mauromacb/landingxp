@@ -41,34 +41,6 @@ if (!$resultado = $conn->query($sql)) {
 }else{
 	$resultado = $resultado->fetch_assoc();
 	if($resultado){	
-		//ingreso el resultado del formulario
-		if ($_POST){
-			//variables
-			$id_cliente=null;
-			//inserto cliente
-			$sql = "INSERT INTO `clientes`(`id_user`, `id_sexo`, `identificacion`, `nombres`, `telefono`, `correo`, `fecha_nacimiento`, `fecha_cotizacion`, `eps`) 
-			VALUES (".$resultado['id_user'].", ".$_POST['sexo'].", '".$_POST['identificacion']."', '".$_POST['nombres']."', '".$_POST['telefono']."', '".$_POST['email']."', '".$_POST['fecha_nacimiento']."', '".date('Y-m-d H:i:s')."', '".$_POST['eps']."');";
-			//echo $sql;
-			if ($result = $conn2->query($sql)) {
-			   $id_cliente=$conn2->insert_id;
-			   //echo $id_cliente;
-			   //inserto cotizaciones_datos_iniciales
-			   $sql = "INSERT INTO `cotizaciones_datos_iniciales`(`id_cliente`, `created_at`) 
-														VALUES (".$id_cliente.", '".date('Y-m-d H:i:s')."');";
-				//echo $sql;
-				if ($conn2->query($sql)) {
-				   $id_cotizacion_datos_iniciales=$conn2->insert_id;
-				   //echo $id_cotizacion_datos_iniciales;
-				   //inserto cotizacion
-				   $sql = "INSERT INTO `cotizaciones`(`id_cliente`, `id_user`, `id_tipo_seguro`, `id_cotizaciones_datos_iniciales`, `fecha_inicial_cotizacion`, `id_etapa_negociacion`, `created_at`) 
-							VALUES (".$id_cliente.", ".$resultado['id_user'].", 3	, ".$id_cotizacion_datos_iniciales.", '".date('Y-m-d H:i:s')."', 1, '".date('Y-m-d H:i:s')."');";
-				   $conn2->query($sql);
-				   //echo $sql;
-				}
-			}
-			//var_dump($_POST);		
-			$onbody='onLoad="alerta()"';
-		}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -424,7 +396,7 @@ h5{
 			  </div>
           <div class="col">
             <div class="caption" style="float:right">
-              <form id="contact" action="index.php" method="post">
+              <form name="formularioPersonal" id="formularioPersonal" enctype="multipart/form-data">
                   <div class="row">
                     <div class="col-md-12">
 					<h2 align="center"><b>Por favor ingresa la siguiente información</b></h2>
@@ -748,7 +720,7 @@ h5{
 		// Cancelamos el evento si se requiere
 		e.preventDefault();
 		var type = "POST";
-		var ajaxurl = 'data.php?p=pe';
+		var ajaxurl = 'data.php?p=emp';
 		var formData = new FormData(document.getElementById("formularioMasDetalles"));
 			$.ajax({
 				type: type,
@@ -770,6 +742,43 @@ h5{
 					icon: 'success',
 				});
 				$("#formularioMasDetalles").trigger("reset");
+			}).fail(function (res) {
+				$(".msg").html(res.b);
+			});
+		});
+    });
+	
+	$(function(){
+	$("#formularioPersonal").on("submit", function(e) {
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		// Cancelamos el evento si se requiere
+		e.preventDefault();
+		var type = "POST";
+		var ajaxurl = 'data.php?p=per';
+		var formData = new FormData(document.getElementById("formularioPersonal"));
+			$.ajax({
+				type: type,
+				url: ajaxurl,
+				dataType: 'json',
+				data: formData,
+				cache: false,
+				contentType: false,
+				processData: false,
+				beforeSend: function () {
+					swal({
+						title: 'Solicitando cotización...',
+					});
+				},
+			}).done(function (data) {
+				swal({
+					title: 'Cotización solicitada exitosamente',
+					icon: 'success',
+				});
+				$("#formularioPersonal").trigger("reset");
 			}).fail(function (res) {
 				$(".msg").html(res.b);
 			});
