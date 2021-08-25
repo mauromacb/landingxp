@@ -1,7 +1,7 @@
 <?php
 
 $servername = "localhost";
-$database = "cotizaxp";
+$database = "cotizaxpp";
 $username = "root";
 $password = "";
 // Create connection
