@@ -1,9 +1,5 @@
 <?php
-
-$servername = "localhost";
-$database = "cotizaxpp";
-$username = "root";
-$password = "";
+require('config.php');
 // Create connection
 $conn = mysqli_connect($servername, $username, $password, $database);
 // Check connection
@@ -35,34 +31,15 @@ if (!$resultado = $conn->query($sql)) {
 }else{
 	$resultado = $resultado->fetch_assoc();
 	if($resultado){	
+	$sql = "SELECT * FROM tipo_vehiculo;";
+	$tipo_vehiculo = $conn->query($sql);
+	$option='';
+	$option='<select name="tipo_vehiculo" id="tipo_vehiculo" class="form-control" required>';
+	while ($fila = mysqli_fetch_array($tipo_vehiculo)){
+		$option=$option.'<option value="'.$fila[0].'">'.$fila[1].'</option>';
+	}
+	$option=$option.'</select>';
 		//ingreso el resultado del formulario
-		if ($_POST){
-			//variables
-			$id_cliente=null;
-			//inserto cliente
-			$sql = "INSERT INTO `clientes`(`id_user`, `identificacion`, `nombres`, `telefono`, `correo`, `fecha_nacimiento`, `fecha_cotizacion`) 
-			VALUES (".$resultado['id_user'].", '".$_POST['identificacion']."', '".$_POST['nombres']."', '".$_POST['telefono']."', '".$_POST['email']."', '".$_POST['fecha_nacimiento']."', '".date('Y-m-d H:i:s')."')";
-			//echo $sql;
-			if ($result = $conn2->query($sql)) {
-			   $id_cliente=$conn2->insert_id;
-			   //echo $id_cliente;
-			   //inserto cotizaciones_datos_iniciales
-			   $sql = "INSERT INTO `cotizaciones_datos_iniciales`(`id_cliente`, `placa_vehiculo`, `lugar_circulacion`, `created_at`) 
-														VALUES (".$id_cliente.", '".$_POST['placa']."', '".$_POST['lugar']."','".date('Y-m-d H:i:s')."');";
-				//echo $sql;
-				if ($conn2->query($sql)) {
-				   $id_cotizacion_datos_iniciales=$conn2->insert_id;
-				   //echo $id_cotizacion_datos_iniciales;
-				   //inserto cotizacion
-				   $sql = "INSERT INTO `cotizaciones`(`id_cliente`, `id_user`, `id_tipo_seguro`, `id_cotizaciones_datos_iniciales`, `fecha_inicial_cotizacion`, `id_etapa_negociacion`, `created_at`) 
-							VALUES (".$id_cotizacion_datos_iniciales.", '".$resultado['id_user']."', 1, '".$id_cotizacion_datos_iniciales."', '".date('Y-m-d H:i:s')."', 1, '".date('Y-m-d H:i:s')."');";
-				   $conn2->query($sql);
-				   //echo $sql;
-				}
-			}
-			//var_dump($_POST);		
-			$onbody='onLoad="alerta()"';
-		}	
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -247,10 +224,14 @@ h5{
 	<script type="text/javascript" src="assets/whatsapp/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript" src="assets/whatsapp/floating-wpp.min.js"></script>
 	<link rel="stylesheet" href="assets/whatsapp/floating-wpp.min.css">
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
   </head>
 
   <body <?php echo $onbody;?>>
 
+	
+	
 <div id="WAButton" style="z-index:99"></div> 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
@@ -282,20 +263,28 @@ h5{
 			  </div>
           <div class="col">
             <div class="caption" style="float:right">
-              <form id="contact" action="index.php" method="post">
+              <form name="formularioAutos" id="formularioAutos" method="post">
                   <div class="row">
                     <div class="col-md-12">
 					<h2 align="center"><b>Por favor ingresa la siguiente información</b></h2>
-					<label>* Nombre y apellido</label>
+					</div>
+					<div class="col-md-12">
+					<label>* Nombres</label>
                       <fieldset>
 						<input name="cl" id="cl" type="hidden" value="<?php echo $resultado["codigo"];?>">
                         <input name="nombres" type="text" class="form-control cxpborder" id="name" placeholder="" required="">
                       </fieldset>
                     </div>
                     <div class="col-md-12">
-					<label>* Documento de Identidad</label>
+					<label>* Identificación</label>
                       <fieldset>
                         <input name="identificacion" type="text" class="form-control cxpborder" id="identificacion" placeholder="1234567890" required="">
+                      </fieldset>
+                    </div>
+					<div class="col-md-12">
+					<label>* Email</label>
+                      <fieldset>
+                        <input name="email" type="text" class="form-control cxpborder" id="email" placeholder="ejemplo@dominio.com" required="">
                       </fieldset>
                     </div>
                     <div class="col-md-12">
@@ -305,34 +294,84 @@ h5{
                       </fieldset>
                     </div>
 					<div class="col-md-12">
-					<label>* Email</label>
-                      <fieldset>
-                        <input name="email" type="text" class="form-control cxpborder" id="email" placeholder="ejemplo@dominio.com" required="">
-                      </fieldset>
-                    </div>
-					<div class="col-md-12">
 					<label>* Teléfono Celular</label>
                       <fieldset>
                         <input name="telefono" type="text" class="form-control cxpborder" id="telefono" placeholder="xxx xxx" required="">
                       </fieldset>
                     </div>
-					<div class="col-md-12">
-					<label>* Placa del Vehículo</label>
+					<div class="col-md-6">
+					<label>* Tipo Vehículo</label>
                       <fieldset>
-                        <input name="placa" type="text" class="form-control cxpborder" id="placa" placeholder="xxx xxx" required="">
+                        <?php echo $option;?>
                       </fieldset>
                     </div>
-					<div class="col-md-12">
-					<label>* Ciudad de Circulación Principal</label>
+					<div class="col-md-6">
+					<label>* Marca del Vehículo</label>
                       <fieldset>
-                        <input name="lugar" type="text" class="form-control cxpborder" id="lugar" placeholder="Quito" required="">
+                        <input name="marca" type="text" class="form-control cxpborder" id="marca" placeholder="" required="">
                       </fieldset>
                     </div>
+					
                     <div class="col-md-12" style="padding-top:20px">
 					
 					<fieldset>
 				<!-- Button trigger modal -->
 				
+				  	<!-- Modal HTML -->
+					<div id="modaldatosadicionales" class="modal fade">
+						<div class="modal-dialog " role="document">
+							<div class="modal-content">
+								<div class="modal-header text-center">
+								<h2 class="text-center">Favor completa estos datos</h2>
+								</div>
+
+								<form name="formularioMasDetalles" id="formularioMasDetalles" enctype="multipart/form-data">
+									<input type="hidden" name="us" value="<?php echo $resultado['id_user'];?>">
+									<div class="modal-body row">
+										<div class="row col-sm-12">
+											<div class="col-md-6">
+										<label>* Modelo del Vehículo</label>
+										  <fieldset>
+											<input name="modelo" type="text" class="form-control cxpborder" id="modelo" placeholder="" >
+										  </fieldset>
+										</div>
+										<div class="col-md-6">
+										<label>* Año de fabricación</label>
+										  <fieldset>
+											<input name="anio" type="text" class="form-control cxpborder" id="anio" placeholder="" >
+										  </fieldset>
+										</div>
+										<div class="col-md-6">
+										<label id="placa_vehiculo">Placa del Vehículo</label>
+										  <fieldset>
+											<input name="placa" type="text" class="form-control cxpborder" id="placa" placeholder="" >
+										  </fieldset>
+										</div>
+										<div class="col-md-6">
+										<label>Precio estimado</label>
+										  <fieldset>
+											<input name="precio" type="text" class="form-control cxpborder" id="precio" placeholder="" >
+										  </fieldset>
+										</div>
+										<div class="col-md-12">
+										<label>* Ciudad de Circulación</label>
+										  <fieldset>
+											<input name="lugar" type="text" class="form-control cxpborder" id="lugar" placeholder="" >
+										  </fieldset>
+										</div>
+										</div>
+									</div>
+									<div class="modal-footer justify-content-between">
+										<button type="button" class="button btn btn-sm btn-dark" onclick="CierraPopup()">Cerrar</button>
+										<button type="submit" class="button btn btn-sm btn-dark" style="background-color:#3a8bcd">Enviar</button>
+									</div>
+								</form>
+								
+							</div>
+						</div>
+					</div>
+
+
 				<button type="submit" id="form-submit" class="button col-md-12" ><b class="fuente-boton">QUIERO MI COTIZACIÓN</b></button>
 			</fieldset>
 			</div>
@@ -579,21 +618,92 @@ h5{
     </script>
 
 
+
   </body>
 <script type="text/javascript">  
-   $(function () {
-           $('#WAButton').floatingWhatsApp({
-               phone: <?php echo "'".$resultado['whatsapp']."'";?>, //WhatsApp Business phone number
-               headerTitle: 'Chat', //Popup Title
-               popupMessage: 'En que puedo ayudarte?', //Popup Message
-               showPopup: true, //Enables popup display
-               buttonImage: '<img src="whatsapp.svg" />', //Button Image
-               //headerColor: 'crimson', //Custom header color
-               //backgroundColor: 'crimson', //Custom background button color
-               position: "right" //Position: left | right
+	$(function () {
+		$('#WAButton').floatingWhatsApp({
+		   phone: <?php echo "'".$resultado['whatsapp']."'";?>, //WhatsApp Business phone number
+		   headerTitle: 'Chat', //Popup Title
+		   popupMessage: 'En que puedo ayudarte?', //Popup Message
+		   showPopup: true, //Enables popup display
+		   buttonImage: '<img src="whatsapp.svg" />', //Button Image
+		   //headerColor: 'crimson', //Custom header color
+		   //backgroundColor: 'crimson', //Custom background button color
+		   position: "right" //Position: left | right
 
-           });
-       });
+		});
+		
+		$("#formularioAutos").on("submit", function(e) {
+			$.ajaxSetup({
+				headers: {
+					'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+				}
+			});
+			// Cancelamos el evento si se requiere
+			e.preventDefault();
+
+			var type = "POST";
+			var ajaxurl = 'data.php?p=aut';
+			var formData = new FormData(document.getElementById("formularioAutos"));
+			$.ajax({
+				type: type,
+				url: ajaxurl,
+				dataType: 'json',
+				data: formData,
+				cache: false,
+				contentType: false,
+				processData: false,
+				beforeSend: function () {
+					$('#modaldatosadicionales').modal({backdrop: 'static', keyboard: false, show:true});
+					$('#modaldatosadicionales').modal('show');
+					if(document.getElementById("modelo").value==''){
+						$("#modelo").prop("required",true);
+						$("#anio").prop("required",true);
+							if(document.getElementById("tipo_vehiculo").value==1){
+								$("#placa").prop("required",false);
+								document.getElementById("placa_vehiculo").innerHTML = "Placa Vehículo";
+							}else{
+								$("#placa").prop("required",true);
+								document.getElementById("placa_vehiculo").innerHTML = "* Placa Vehículo";
+							}
+						$("#precio").prop("required",true);
+						$("#lugar").prop("required",true);
+						//alert('Debe llenar el campo modelo');
+						$( "#modelo" ).focus();
+						return false;
+					}
+					
+					$('#modaldatosadicionales').modal('hide');
+					swal({
+					title: 'Cotización solicitada exitosamente',
+					icon: 'success',
+				});
+				},
+			}).done(function (data) {
+				swal({
+					title: 'Cotización solicitada exitosamente',
+					icon: 'success',
+				});
+				$("#formularioAutos").trigger("reset");
+			}).fail(function (res) {
+				$(".msg").html(res.b);
+			});
+			
+		});
+	});
+	
+	
+	function CierraPopup() {
+		$("#modelo").prop("required",false);
+		$("#anio").prop("required",false);
+		$("#placa").prop("required",false);
+		$("#precio").prop("required",false);
+		$("#lugar").prop("required",false);
+	  $("#modaldatosadicionales").modal('hide');//ocultamos el modal
+	  $('body').removeClass('modal-open');//eliminamos la clase del body para poder hacer scroll
+	  $('.modal-backdrop').remove();//eliminamos el backdrop del modal
+	}
 </script> 
 </html>
 <?php
