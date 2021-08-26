@@ -797,7 +797,7 @@ h5{
 				processData: false,
 				beforeSend: function () {
 					swal({
-						title: 'Solicitando cotización...',
+						title: 'Cotización solicitada exitosamente...',
 					});
 				},
 			}).done(function (data) {
