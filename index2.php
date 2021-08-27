@@ -437,7 +437,7 @@ h5{
             </div>
 			<div class="offset-md-4 col-md-4" style="padding-top:20px">
 			  <fieldset>
-				<button type="submit" id="form-submit" class="button col-md-12" ><b class="fuente-boton">QUIERO MI COTIZACIÓN</b></button>
+				<a id="form-submit" class="scroll-top button col-md-12" style="color:#fff" ><div align="center"><b class="fuente-boton">QUIERO MI COTIZACIÓN</b></div></a>
 			  </fieldset>
 			</div>
           </div>
@@ -519,7 +519,7 @@ h5{
           </div>
 		  <div class="offset-md-4 col-md-4" style="padding-top:20px">
 			  <fieldset>
-				<button type="submit" id="form-submit" class="button col-md-12" ><b class="fuente-boton">QUIERO MI COTIZACIÓN</b></button>
+				<a id="form-submit" class="scroll-top button col-md-12" style="color:#fff" ><div align="center"><b class="fuente-boton">QUIERO MI COTIZACIÓN</b></div></a>
 			  </fieldset>
 		  </div>
 		  
@@ -554,7 +554,7 @@ h5{
 	
 	<div class="offset-md-4 col-md-4" style="padding-top:20px">
 	  <fieldset>
-		<button type="submit" id="form-submit" class="button col-md-12" ><b class="fuente-boton">QUIERO COMUNICARME CONTIGO</b></button>
+		<a href="<?php echo utf8_encode($resultado["url_agendador_citas"]);?>" target="_blank" type="submit" id="form-submit" class="button col-md-12" ><div align="center"><b class="fuente-boton">QUIERO COMUNICARME CONTIGO</b></div></a>
 	  </fieldset>
 	</div>
     <!-- Subscribe Form Ends Here -->
@@ -645,7 +645,7 @@ h5{
 						  </fieldset>
 						</div>
 						<div class="col-md-12">
-						<label>Identificación</label>
+						<label>Identificación (indispensable si es menor de edad)</label>
 						  <fieldset>
 							<input name="identificacion" type="text" class="form-control cxpborder" id="identificacion" value="">
 						  </fieldset>
@@ -665,7 +665,7 @@ h5{
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-dark" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-dark" data-dismiss="modal">QUIERO MI COTIZACIÓN</button>
 					<button type="submit" class="button btn btn-sm btn-info col-md-6" style="background-color:#3a8bcd">
 						Agregar
 					</button>
@@ -812,6 +812,20 @@ h5{
 			});
 		});
     });
+	
+	$(window).scroll(function() {
+    if ($(this).scrollTop() > 100) {
+        $('a.scroll-top').fadeIn('slow');
+
+    } else {
+        $('a.scroll-top').fadeOut('slow');
+    }
+	});
+
+	$('a.scroll-top').click(function(event) {
+		event.preventDefault();
+		$('html, body').animate({scrollTop: 0}, 600);
+	});
 </script> 
 </html>
 <?php
