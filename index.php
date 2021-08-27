@@ -436,7 +436,7 @@ h5{
             </div>
 			<div class="offset-md-4 col-md-4" style="padding-top:20px">
 			  <fieldset>
-				<button type="submit" id="form-submit" class="button col-md-12" ><b class="fuente-boton">QUIERO MI COTIZACIÓN</b></button>
+				<a id="form-submit" class="scroll-top button col-md-12" style="color:#fff" ><div align="center"><b class="fuente-boton">QUIERO MI COTIZACIÓN</b></div></a>
 			  </fieldset>
 			</div>
           </div>
@@ -518,7 +518,7 @@ h5{
           </div>
 		  <div class="offset-md-4 col-md-4" style="padding-top:20px">
 			  <fieldset>
-				<button type="submit" id="form-submit" class="button col-md-12" ><b class="fuente-boton">QUIERO MI COTIZACIÓN</b></button>
+				<a id="form-submit" class="scroll-top button col-md-12" style="color:#fff" ><div align="center"><b class="fuente-boton">QUIERO MI COTIZACIÓN</b></div></a>
 			  </fieldset>
 		  </div>
 		  
@@ -553,7 +553,7 @@ h5{
 	
 	<div class="offset-md-4 col-md-4" style="padding-top:20px">
 	  <fieldset>
-		<button type="submit" id="form-submit" class="button col-md-12" ><b class="fuente-boton">QUIERO COMUNICARME CONTIGO</b></button>
+		<a href="<?php echo utf8_encode($resultado["url_agendador_citas"]);?>" target="_blank" type="submit" id="form-submit" class="button col-md-12" ><div align="center"><b class="fuente-boton">QUIERO COMUNICARME CONTIGO</b></div></a>
 	  </fieldset>
 	</div>
     <!-- Subscribe Form Ends Here -->
@@ -704,6 +704,22 @@ h5{
 	  $('body').removeClass('modal-open');//eliminamos la clase del body para poder hacer scroll
 	  $('.modal-backdrop').remove();//eliminamos el backdrop del modal
 	}
+	
+	
+	$(window).scroll(function() {
+    if ($(this).scrollTop() > 100) {
+        $('a.scroll-top').fadeIn('slow');
+
+    } else {
+        $('a.scroll-top').fadeOut('slow');
+    }
+	});
+
+	$('a.scroll-top').click(function(event) {
+		event.preventDefault();
+		$('html, body').animate({scrollTop: 0}, 600);
+	});
+
 </script> 
 </html>
 <?php
