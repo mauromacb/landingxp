@@ -263,121 +263,118 @@ h5{
 			  </div>
           <div class="col">
             <div class="caption" style="float:right">
-              <form name="formularioAutos" id="formularioAutos" method="post">
-                  <div class="row">
-                    <div class="col-md-12">
-					<h2 align="center"><b>Por favor ingresa la siguiente información</b></h2>
-					</div>
-					<div class="col-md-12">
-					<label>* Nombres</label>
-                      <fieldset>
-						<input name="cl" id="cl" type="hidden" value="<?php echo $resultado["codigo"];?>">
-                        <input name="nombres" type="text" class="form-control cxpborder" id="name" placeholder="" required="">
-                      </fieldset>
-                    </div>
-                    <div class="col-md-12">
-					<label>* Identificación</label>
-                      <fieldset>
-                        <input name="identificacion" type="text" class="form-control cxpborder" id="identificacion" placeholder="1234567890" required="">
-                      </fieldset>
-                    </div>
-					<div class="col-md-12">
-					<label>* Email</label>
-                      <fieldset>
-                        <input name="email" type="text" class="form-control cxpborder" id="email" placeholder="ejemplo@dominio.com" required="">
-                      </fieldset>
-                    </div>
-                    <div class="col-md-12">
-					<label>* Fecha de Nacimiento</label>
-                      <fieldset>
-                        <input name="fecha_nacimiento" type="date" class="form-control cxpborder" id="subject" required="">
-                      </fieldset>
-                    </div>
-					<div class="col-md-12">
-					<label>* Teléfono Celular</label>
-                      <fieldset>
-                        <input name="telefono" type="text" class="form-control cxpborder" id="telefono" placeholder="xxx xxx" required="">
-                      </fieldset>
-                    </div>
-					<div class="col-md-6">
-					<label>* Tipo Vehículo</label>
-                      <fieldset>
-                        <?php echo $option;?>
-                      </fieldset>
-                    </div>
-					<div class="col-md-6">
-					<label>* Marca del Vehículo</label>
-                      <fieldset>
-                        <input name="marca" type="text" class="form-control cxpborder" id="marca" placeholder="" required="">
-                      </fieldset>
-                    </div>
+				<form name="formularioAutos" id="formularioAutos" method="post">
+					 <div class="row">
+						<div class="col-md-12">
+						<h2 align="center"><b>Por favor ingresa la siguiente información</b></h2>
+						</div>
+						<div class="col-md-12">
+						<label>* Nombres</label>
+						  <fieldset>
+							<input name="cl" id="cl" type="hidden" value="<?php echo $resultado["codigo"];?>">
+							<input name="nombres" type="text" class="form-control cxpborder" id="name" placeholder="" required="">
+						  </fieldset>
+						</div>
+						<div class="col-md-12">
+						<label>* Identificación</label>
+						  <fieldset>
+							<input name="identificacion" type="text" class="form-control cxpborder" id="identificacion" placeholder="1234567890" required="">
+						  </fieldset>
+						</div>
+						<div class="col-md-12">
+						<label>* Email</label>
+						  <fieldset>
+							<input name="email" type="text" class="form-control cxpborder" id="email" placeholder="ejemplo@dominio.com" required="">
+						  </fieldset>
+						</div>
+						<div class="col-md-12">
+						<label>* Fecha de Nacimiento</label>
+						  <fieldset>
+							<input name="fecha_nacimiento" type="date" class="form-control cxpborder" id="subject" required="">
+						  </fieldset>
+						</div>
+						<div class="col-md-12">
+						<label>* Teléfono Celular</label>
+						  <fieldset>
+							<input name="telefono" type="text" class="form-control cxpborder" id="telefono" placeholder="xxx xxx" required="">
+						  </fieldset>
+						</div>
+						<div class="col-md-6">
+						<label>* Tipo Vehículo</label>
+						  <fieldset>
+							<?php echo $option;?>
+						  </fieldset>
+						</div>
+						<div class="col-md-6">
+						<label>* Marca del Vehículo</label>
+						  <fieldset>
+							<input name="marca" type="text" class="form-control cxpborder" id="marca" placeholder="" required="">
+						  </fieldset>
+						</div>
+						
+						<div class="col-md-12" style="padding-top:20px">
+						
+						<fieldset>
+					<!-- Button trigger modal -->
 					
-                    <div class="col-md-12" style="padding-top:20px">
-					
-					<fieldset>
-				<!-- Button trigger modal -->
-				
-				  	<!-- Modal HTML -->
-					<div id="modaldatosadicionales" class="modal fade">
-						<div class="modal-dialog " role="document">
-							<div class="modal-content">
-								<div class="modal-header text-center">
-								<h2 class="text-center">Favor completa estos datos</h2>
-								</div>
+						<!-- Modal HTML -->
+						<div id="modaldatosadicionales" class="modal fade">
+							<div class="modal-dialog " role="document">
+								<div class="modal-content">
+									<div class="modal-header text-center">
+									<h2 class="text-center">Favor completa estos datos</h2>
+									</div>
 
-								<form name="formularioMasDetalles" id="formularioMasDetalles" enctype="multipart/form-data">
-									<input type="hidden" name="us" value="<?php echo $resultado['id_user'];?>">
-									<div class="modal-body row">
-										<div class="row col-sm-12">
+									<form name="formularioMasDetalles" id="formularioMasDetalles" enctype="multipart/form-data">
+										<input type="hidden" name="us" value="<?php echo $resultado['id_user'];?>">
+										<div class="modal-body row">
+											<div class="row col-sm-12">
+												<div class="col-md-6">
+											<label>* Modelo del Vehículo</label>
+											  <fieldset>
+												<input name="modelo" type="text" class="form-control cxpborder" id="modelo" placeholder="" >
+											  </fieldset>
+											</div>
 											<div class="col-md-6">
-										<label>* Modelo del Vehículo</label>
-										  <fieldset>
-											<input name="modelo" type="text" class="form-control cxpborder" id="modelo" placeholder="" >
-										  </fieldset>
+											<label>* Año de fabricación</label>
+											  <fieldset>
+												<input name="anio" type="text" class="form-control cxpborder" id="anio" placeholder="" >
+											  </fieldset>
+											</div>
+											<div class="col-md-6">
+											<label id="placa_vehiculo">Placa del Vehículo</label>
+											  <fieldset>
+												<input name="placa" type="text" class="form-control cxpborder" id="placa" placeholder="" >
+											  </fieldset>
+											</div>
+											<div class="col-md-6">
+											<label>Precio estimado</label>
+											  <fieldset>
+												<input name="precio" type="text" class="form-control cxpborder" id="precio" placeholder="" >
+											  </fieldset>
+											</div>
+											<div class="col-md-12">
+											<label>* Ciudad de Circulación</label>
+											  <fieldset>
+												<input name="lugar" type="text" class="form-control cxpborder" id="lugar" placeholder="" >
+											  </fieldset>
+											</div>
+											</div>
 										</div>
-										<div class="col-md-6">
-										<label>* Año de fabricación</label>
-										  <fieldset>
-											<input name="anio" type="text" class="form-control cxpborder" id="anio" placeholder="" >
-										  </fieldset>
+										<div class="modal-footer justify-content-between">
+											<button type="button" class="button btn btn-sm btn-dark" onclick="CierraPopup()">Cerrar</button>
+											<button type="submit" class="button btn btn-sm btn-dark" style="background-color:#3a8bcd">Enviar</button>
 										</div>
-										<div class="col-md-6">
-										<label id="placa_vehiculo">Placa del Vehículo</label>
-										  <fieldset>
-											<input name="placa" type="text" class="form-control cxpborder" id="placa" placeholder="" >
-										  </fieldset>
-										</div>
-										<div class="col-md-6">
-										<label>Precio estimado</label>
-										  <fieldset>
-											<input name="precio" type="text" class="form-control cxpborder" id="precio" placeholder="" >
-										  </fieldset>
-										</div>
-										<div class="col-md-12">
-										<label>* Ciudad de Circulación</label>
-										  <fieldset>
-											<input name="lugar" type="text" class="form-control cxpborder" id="lugar" placeholder="" >
-										  </fieldset>
-										</div>
-										</div>
-									</div>
-									<div class="modal-footer justify-content-between">
-										<button type="button" class="button btn btn-sm btn-dark" onclick="CierraPopup()">Cerrar</button>
-										<button type="submit" class="button btn btn-sm btn-dark" style="background-color:#3a8bcd">Enviar</button>
-									</div>
-								</form>
-								
+									</form>
+									
+								</div>
 							</div>
 						</div>
-					</div>
-
-
-				<button type="submit" id="form-submit" class="button col-md-12" ><b class="fuente-boton">QUIERO MI COTIZACIÓN</b></button>
-			</fieldset>
-			</div>
-			
-		  </div>
-		</form>  
+					<button type="submit" id="form-submit" class="button col-md-12" ><b class="fuente-boton">QUIERO MI COTIZACIÓN</b></button>
+				</fieldset>
+				</div>
+			  </div>
+			</form>  
             </div>
           </div>
         </div>
