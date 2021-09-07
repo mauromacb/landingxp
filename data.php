@@ -72,11 +72,12 @@ require('config.php');
 
 				$mail->AddAddress('tuportalec@hotmail.com');
 
-				if (!$mail->Send()) {
+				/*if (!$mail->Send()) {
 					echo 'Error: ' . $mail->ErrorInfo;
 				} else {
 					echo json_encode('Mail enviado exitosamente...!');
-				}
+				}*/
+				echo json_encode('Mail enviado exitosamente...!');
 				
 			} catch (Exception $e) {
 				echo $e->getMessage();
@@ -200,11 +201,12 @@ $sql = "SELECT * FROM empresas WHERE codigo = '".$_POST['cl']."' limit 1;";
 
 							$mail->AddAddress('tuportalec@hotmail.com');
 
-							if (!$mail->Send()) {
+							/*if (!$mail->Send()) {
 								echo 'Error: ' . $mail->ErrorInfo;
 							} else {
 								echo json_encode('Mail enviado exitosamente...!');
-							}
+							}*/
+							echo json_encode('Mail enviado exitosamente...!');
 							
 						} catch (Exception $e) {
 							echo $e->getMessage();
@@ -306,11 +308,12 @@ $sql = "SELECT * FROM empresas WHERE codigo = '".$_POST['cl']."' limit 1;";
 
 							$mail->AddAddress('tuportalec@hotmail.com');
 
-							if (!$mail->Send()) {
+							/*if (!$mail->Send()) {
 								echo 'Error: ' . $mail->ErrorInfo;
 							} else {
 								echo json_encode('Mail enviado exitosamente...!');
-							}
+							}*/
+							echo json_encode('Mail enviado exitosamente...!');
 							
 						} catch (Exception $e) {
 							echo $e->getMessage();

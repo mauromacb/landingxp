@@ -367,14 +367,10 @@ h5{
 						<fieldset>
 							<!-- Button trigger modal -->
 							<div class="row">
-								<span class="button btn btn-sm btn-info col-md-6" data-toggle="modal" data-backdrop="static" data-keyboard="false" data-target="#mas-detalles" style="background-color:#3a8bcd">
-									<b class="fuente-boton">MÁS MIEMBROS</b>
-								</span>
-								<button type="submit" id="form-submit" class="button col-md-6" ><b class="fuente-boton">COTIZAR</b></button>
+								<button type="submit" name="enviar" id="enviar" value="1" class="button col-md-12" ><b class="fuente-boton">QUIERO MI COTIZACIÓN</b></button>
 							</div>
 						</fieldset>
 					</div>
-			
 		  </div>
 		</form>  
             
@@ -621,7 +617,7 @@ h5{
 
 <!-- Modal -->
 <div class="modal fade" id="mas-detalles">
-    <div class="modal-dialog modal-md">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content bg-default card card-dark card-outline">
             <div class="modal-header">
                 <h5 class="modal-title">Ingresar más miembros</h5>
@@ -641,7 +637,7 @@ h5{
 						<div class="col-md-12">
 						<label>* Nombre y apellido</label>
 						  <fieldset>
-							<input name="nombres" type="text" class="form-control cxpborder" id="nombres" placeholder="" required="">
+							<input name="nombres" type="text" class="form-control cxpborder" id="nombres" placeholder="" required>
 						  </fieldset>
 						</div>
 						<div class="col-md-12">
@@ -653,7 +649,7 @@ h5{
 						<div class="col-md-12">
 						<label>* Fecha de Nacimiento</label>
 						  <fieldset>
-							<input name="fecha_nacimiento" type="date" class="form-control cxpborder" id="fecha_nacimiento" required="">
+							<input name="fecha_nacimiento" type="date" class="form-control cxpborder" id="fecha_nacimiento" required>
 						  </fieldset>
 						</div>
 						<div class="col-md-12">
@@ -665,10 +661,8 @@ h5{
                     </div>
                 </div>
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-dark" data-dismiss="modal">QUIERO MI COTIZACIÓN</button>
-					<button type="submit" class="button btn btn-sm btn-info col-md-6" style="background-color:#3a8bcd">
-						Agregar
-					</button>
+                    <button type="submit" name="enviar" id="enviar" value="0" class="button btn btn-sm btn-info" style="background-color:#3a8bcd">+ AGREGAR</button>
+                    <button type="submit" name="enviar" id="enviar" value="1" class="button btn btn-dark" onclick="setEnviar();">QUIERO MI COTIZACIÓN</button>
                 </div>
             </form>
         </div>
@@ -679,7 +673,8 @@ h5{
 <!-- Modal -->
 
   </body>
-<script type="text/javascript">  
+<script type="text/javascript">  	
+	
    $(function () 
    {
 	   $('#WAButton').floatingWhatsApp({
@@ -695,56 +690,7 @@ h5{
 	   });
    });
 
-   var html='';//global variable  
-   let arreglo=[];
-   var i=0;
-   $(function(){
-	$("#formularioMasDetalles").on("submit", function(e) {
-		$.ajaxSetup({
-			headers: {
-				'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-			}
-		});
-		// Cancelamos el evento si se requiere
-		e.preventDefault();
-		var type = "POST";
-		var ajaxurl = 'data.php?p=nm';
-		var formData = new FormData(document.getElementById("formularioMasDetalles"));
-		formData.append("masdetallesinput", document.getElementById("masdetallesinput").value);
-			$.ajax({
-				type: type,
-				url: ajaxurl,
-				dataType: 'json',
-				data: formData,
-				cache: false,
-				contentType: false,
-				processData: false,
-				beforeSend: function () {
-					document.getElementById("masdetalles").innerHTML = "cargando...";
-				},
-			}).done(function (data) {
-				arreglo.push([data.nombres, data.identificacion, data.fecha_nacimiento, data.sexo]);
-				html='';
-				j=0;
-				arregloinput='';
-				for (var valor of arreglo) {
-				  html=html+'<strong> - Nombres: </strong> '+valor[0]+' | <strong>Identicación: </strong> '+valor[1]+' | <strong>Fecha Nacimiento: </strong> '+valor[2]+'  | <strong>Sexo: </strong> '+valor[3]+' | <button class="badge badge-danger right" onclick="eliminarDetalle('+j+')"> <span clas="fa fa-remove">X</span> Eliminar</button><hr>';
-				  j=j+1;
-				}
-				
-				document.getElementById("masdetalles").innerHTML = html;
-				document.getElementById("masdetallesinput").value = JSON.stringify(arreglo);
-				
-				$("#formularioMasDetalles").trigger("reset");
-				i=i+1;
-
-			}).fail(function (res) {
-				$(".msg").html(res.b);
-			});
-		});
-    });
-	
-	function eliminarDetalle(i){
+   	function eliminarDetalle(i){
 		swal({
             title: "Seguro que desea eliminar?",
             text: "Presiona Ok para continuar.",
@@ -775,6 +721,10 @@ h5{
 	
 	}
 	
+	function setEnviar(){
+		document.getElementById("enviar").value=0;
+	}
+
 	$(function(){
 	$("#formularioFamiliar").on("submit", function(e) {
 		$.ajaxSetup({
@@ -796,9 +746,11 @@ h5{
 				contentType: false,
 				processData: false,
 				beforeSend: function () {
-					swal({
-						title: 'Cotización solicitada exitosamente...',
-					});
+					if(document.getElementById("enviar").value==1){
+						$('#mas-detalles').modal({backdrop: 'static', keyboard: false, show:true});
+						$('#mas-detalles').modal('show');
+						return false;
+					}
 				},
 			}).done(function (data) {
 				$('#modalempleados').modal('hide');
@@ -812,7 +764,80 @@ h5{
 			});
 		});
     });
-	
+
+   var html='';//global variable  
+   let arreglo=[];
+   var i=0;
+   $(function(){
+	$("#formularioMasDetalles").on("submit", function(e) {
+		$.ajaxSetup({
+			headers: {
+				'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+			}
+		});
+		// Cancelamos el evento si se requiere
+		e.preventDefault();
+		var type = "POST";
+		if(document.getElementById("enviar").value==1){
+			var ajaxurl = 'data.php?p=nm';
+			var formData = new FormData(document.getElementById("formularioMasDetalles"));
+			formData.append("masdetallesinput", document.getElementById("masdetallesinput").value);
+			$("#nombres").prop("required",true);
+			$("#fecha_nacimiento").prop("required",true);
+		}else{
+			$("#nombres").prop("required",false);
+			$("#fecha_nacimiento").prop("required",false);
+			var ajaxurl = 'data.php?p=fam';
+			var formData = new FormData(document.getElementById("formularioFamiliar"));
+		}
+		
+		
+		$.ajax({
+			type: type,
+			url: ajaxurl,
+			dataType: 'json',
+			data: formData,
+			cache: false,
+			contentType: false,
+			processData: false,
+			beforeSend: function () {
+				//document.getElementById("masdetalles").innerHTML = "cargando...";
+			},
+		}).done(function (data) {
+			if(document.getElementById("enviar").value==1){
+				arreglo.push([data.nombres, data.identificacion, data.fecha_nacimiento, data.sexo]);
+				html='';
+				j=0;
+				arregloinput='';
+				for (var valor of arreglo) {
+				  html=html+'<strong> - Nombres: </strong> '+valor[0]+' | <strong>Identicación: </strong> '+valor[1]+' | <strong>Fecha Nacimiento: </strong> '+valor[2]+'  | <strong>Sexo: </strong> '+valor[3]+' | <button class="badge badge-danger right" onclick="eliminarDetalle('+j+')"> <span clas="fa fa-remove">X</span> Eliminar</button><hr>';
+				  j=j+1;
+				}
+
+				document.getElementById("masdetalles").innerHTML = html;
+				document.getElementById("masdetallesinput").value = JSON.stringify(arreglo);
+
+				$("#formularioMasDetalles").trigger("reset");
+				i=i+1;
+			}else{
+				swal({
+					title: 'Cotización solicitada exitosamente',
+					icon: 'success',
+				});
+				$('#modalempleados').modal('hide');
+				$("#formularioFamiliar").trigger("reset");
+				$("#formularioMasDetalles").trigger("reset");
+				location.reload();
+			}
+
+
+			}).fail(function (res) {
+				$(".msg").html(res.b);
+			});
+		});
+    });
+
+
 	$(window).scroll(function() {
     if ($(this).scrollTop() > 100) {
         $('a.scroll-top').fadeIn('slow');
