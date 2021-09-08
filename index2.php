@@ -34,68 +34,14 @@ if (!$resultado = $conn->query($sql)) {
 }else{
 	$resultado = $resultado->fetch_assoc();
 	if($resultado){	
-		//ingreso el resultado del formulario
-		if ($_POST){
-			//var_dump($_POST);exit;
-			//variables
-			$id_cliente=null;
-			//inserto cliente
-			$sql = "INSERT INTO clientes(`id_user`, `id_sexo`, `identificacion`, `nombres`, `telefono`, `correo`, `fecha_nacimiento`, `fecha_cotizacion`, `eps`) 
-			VALUES (".$resultado['id_user'].", ".$_POST['sexo'].", '".$_POST['identificacion']."', '".$_POST['nombres']."', '".$_POST['telefono']."', '".$_POST['email']."', '".$_POST['fecha_nacimiento']."', '".date('Y-m-d H:i:s')."', '".$_POST['eps']."');";
-			echo $sql;
-			if ($result = $conn2->query($sql)) {
-			   $id_cliente=$conn2->insert_id;
-			   //echo $id_cliente;
-			   //var_dump($_POST);
-				//echo "<br><br>";
-				$detalles=json_decode(json_decode(json_encode($_POST["masdetallesinput"][0])));
-				foreach($detalles as $detalle){
-					/*var_dump($detalle[0]);
-					var_dump($detalle[1]);
-					var_dump($detalle[2]);
-					var_dump($detalle[3]);
-					echo "<br><br>";*/
-		
-					$sql="INSERT INTO clientes_adicionales(`id_cliente`, `id_sexo`, `identificacion`, `nombres`, `fecha_nacimiento`, `created_at`) 
-																VALUES (".$id_cliente.", ".$detalle[3].", '".$detalle[1]."', '".$detalle[0]."', '".$detalle[2]."', '".date('Y-m-d H:i:s')."');";
-					if (!$conn2->query($sql)) {
-						echo "Lo sentimos, este sitio web está experimentando problemas.";
-						die('Error al insertar clientes adicionales');
-					}
-				}
-			   //inserto cotizaciones_datos_iniciales
-			   $sql = "INSERT INTO `cotizaciones_datos_iniciales`(`id_cliente`, `created_at`) 
-														VALUES (".$id_cliente.", '".date('Y-m-d H:i:s')."');";
-				//echo $sql;
-				if ($conn2->query($sql)) {
-				   $id_cotizacion_datos_iniciales=$conn2->insert_id;
-				   //echo $id_cotizacion_datos_iniciales;
-				   //inserto cotizacion
-				   $sql = "INSERT INTO cotizaciones(`id_cliente`, `id_user`, `id_tipo_seguro`, `id_cotizaciones_datos_iniciales`, `fecha_inicial_cotizacion`, `id_etapa_negociacion`, `created_at`) 
-							VALUES (".$id_cliente.", ".$resultado['id_user'].", 3	, ".$id_cotizacion_datos_iniciales.", '".date('Y-m-d H:i:s')."', 1, '".date('Y-m-d H:i:s')."');";
-				   if (!$conn2->query($sql)) {
-						echo "Lo sentimos, este sitio web está experimentando problemas.";
-						die('Error al insertar cotizacion');
-				   }
-				   //echo $sql;
-				}else{
-					echo "Lo sentimos, este sitio web está experimentando problemas.";
-					die('Error al insertar datos iniciales cotizacion');
-				}
-			}else{
-				echo "Lo sentimos, este sitio web está experimentando problemas.";
-				die('Error al insertar cliente');
-			}
-			//var_dump($_POST);		
+		if ($_POST){	
 			$onbody='onLoad="alerta()"';
 		}
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
   <head>
-
-     <meta http-equiv=”Content-Type” content=”text/html; charset=ISO-8859-1″ />
+    <meta http-equiv=”Content-Type” content=”text/html; charset=ISO-8859-1″ />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -280,7 +226,28 @@ h5{
   </head>
 
   <body <?php echo $onbody;?>>
-	
+
+<!-- Modal -->
+<div class="modal fade" id="modal-agradecimiento">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content bg-default card card-dark card-outline">
+            <div class="modal-header">
+                <h5 class="modal-title">Gracias por contactarnos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+			<div class="modal-header">
+                 <iframe src="<?php echo $resultado["url_agradecimiento"];?>" style="width:100%; height:550px;"> Your browser doesn't support iframes </iframe>
+            </div>
+
+            </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- Modal -->
+
 <div id="WAButton" style="z-index:99"></div> 
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark static-top">
@@ -753,7 +720,6 @@ h5{
 					}
 				},
 			}).done(function (data) {
-				$('#modalempleados').modal('hide');
 				swal({
 					title: 'Cotización solicitada exitosamente',
 					icon: 'success',
@@ -820,14 +786,22 @@ h5{
 				$("#formularioMasDetalles").trigger("reset");
 				i=i+1;
 			}else{
+				setTimeout(function(){
+					console.log("I am the third log after 1 seconds");
+				},1000);
 				swal({
 					title: 'Cotización solicitada exitosamente',
 					icon: 'success',
 				});
-				$('#modalempleados').modal('hide');
+				setTimeout(function(){
+					console.log("I am the third log after 1 seconds");
+				},5000);
+				$('#mas-detalles').modal('hide');
 				$("#formularioFamiliar").trigger("reset");
 				$("#formularioMasDetalles").trigger("reset");
-				location.reload();
+				$('#modal-agradecimiento').modal({backdrop: 'static', keyboard: false, show:true});
+				$('#modal-agradecimiento').modal('show');
+				//location.reload();
 			}
 
 
