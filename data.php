@@ -134,7 +134,7 @@ $sql = "SELECT * FROM empresas WHERE codigo = '".$_POST['cl']."' limit 1;";
 					   //echo $id_cotizacion_datos_iniciales;
 					   //inserto cotizacion
 					   $sql = "INSERT INTO cotizaciones(`id_cliente`, `id_user`, `id_tipo_seguro`, `id_cotizaciones_datos_iniciales`, `fecha_inicial_cotizacion`, `id_etapa_negociacion`, `created_at`) 
-								VALUES (".$id_cliente.", ".$resultado['id_user'].", 3	, ".$id_cotizacion_datos_iniciales.", '".date('Y-m-d H:i:s')."', 1, '".date('Y-m-d H:i:s')."');";
+								VALUES (".$id_cliente.", ".$resultado['id_user'].", 4	, ".$id_cotizacion_datos_iniciales.", '".date('Y-m-d H:i:s')."', 1, '".date('Y-m-d H:i:s')."');";
 					   if (!$conn2->query($sql)) {
 							echo "Lo sentimos, este sitio web está experimentando problemas.";
 							die('Error al insertar cotizacion');
