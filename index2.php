@@ -229,7 +229,7 @@ h5{
 
 <!-- Modal -->
 <div class="modal fade" id="modal-agradecimiento">
-    <div class="modal-dialog modal-xl">
+    <div class="modal-dialog modal-xl" style="max-width: 80%;">
         <div class="modal-content bg-default card card-dark card-outline">
             <div class="modal-header">
                 <h5 class="modal-title">Gracias por contactarnos</h5>

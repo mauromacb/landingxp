@@ -246,13 +246,36 @@ h5{
   </head>
 
   <body <?php echo $onbody;?>>	  
-		  
+
+
+<!-- Modal -->
+<div class="modal fade" id="modal-agradecimiento">
+    <div class="modal-dialog modal-xl" style="max-width: 80%;">
+        <div class="modal-content bg-default card card-dark card-outline">
+            <div class="modal-header">
+                <h5 class="modal-title">Gracias por contactarnos</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+			<div class="modal-header">
+                 <iframe src="<?php echo $resultado["url_agradecimiento"];?>" style="width:100%; height:550px;"> Your browser doesn't support iframes </iframe>
+            </div>
+
+            </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- Modal -->
+
+
 <!-- Modal HTML -->
 <div id="myModal" class="modal fade">
 	<div class="modal-dialog " style="max-width: 90%;" role="document">
 		<div class="modal-content">
 			<div class="modal-header text-center">
-			<h2 class="text-center">¿Qué necesitas?</h2>
+			<h2 class="text-center">¿Qué plan estas buscando?</h2>
 			</div>
 			<div class="modal-body">
 				<div class="row">
@@ -318,7 +341,7 @@ h5{
 	<div class="modal-dialog " role="document">
 		<div class="modal-content">
 			<div class="modal-header text-center">
-			<h2 class="text-center">Quiero más información</h2>
+				<h3 class="text-center">Por favor dejanos tu información e inmediatamente te contactaremos.</h3>
 			</div>
 
 			<form name="formularioMasDetalles" id="formularioMasDetalles" enctype="multipart/form-data">
@@ -738,7 +761,7 @@ h5{
 			}).done(function (data) {
 				$('#modalempleados').modal('hide');
 				swal({
-					title: 'Cotización solicitada exitosamente',
+					title: 'Muchas gracias, nos comunicaremos contigo.',
 					icon: 'success',
 				});
 				$("#formularioMasDetalles").trigger("reset");
@@ -779,6 +802,8 @@ h5{
 					icon: 'success',
 				});
 				$("#formularioPersonal").trigger("reset");
+				$('#modal-agradecimiento').modal({backdrop: 'static', keyboard: false, show:true});
+				$('#modal-agradecimiento').modal('show');
 			}).fail(function (res) {
 				$(".msg").html(res.b);
 			});
