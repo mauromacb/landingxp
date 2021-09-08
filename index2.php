@@ -334,7 +334,7 @@ h5{
 						<fieldset>
 							<!-- Button trigger modal -->
 							<div class="row">
-								<button type="submit" name="enviar" id="enviar" value="1" class="button col-md-12" ><b class="fuente-boton">QUIERO MI COTIZACIÓN</b></button>
+								<button type="submit" name="enviar" id="enviar" value="1" class="button col-md-12" ><b class="fuente-boton">AGREGAR MÀS MIEMBROS</b></button>
 							</div>
 						</fieldset>
 					</div>
@@ -608,7 +608,7 @@ h5{
 						  </fieldset>
 						</div>
 						<div class="col-md-12">
-						<label>Identificación (indispensable si es menor de edad)</label>
+						<label>Identificación (indispensable si es mayor de edad)</label>
 						  <fieldset>
 							<input name="identificacion" type="text" class="form-control cxpborder" id="identificacion" value="">
 						  </fieldset>
