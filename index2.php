@@ -334,7 +334,7 @@ h5{
 						<fieldset>
 							<!-- Button trigger modal -->
 							<div class="row">
-								<button type="submit" name="enviar" id="enviar" value="1" class="button col-md-12" ><b class="fuente-boton">AGREGAR MÀS MIEMBROS</b></button>
+								<button type="submit" name="enviar" id="enviar" value="1" class="button col-md-12"><b class="fuente-boton">AGREGAR MÀS MIEMBROS</b></button>
 							</div>
 						</fieldset>
 					</div>
@@ -786,22 +786,21 @@ h5{
 				$("#formularioMasDetalles").trigger("reset");
 				i=i+1;
 			}else{
-				setTimeout(function(){
-					console.log("I am the third log after 1 seconds");
-				},1000);
 				swal({
 					title: 'Cotización solicitada exitosamente',
 					icon: 'success',
 				});
-				setTimeout(function(){
-					console.log("I am the third log after 1 seconds");
-				},5000);
 				$('#mas-detalles').modal('hide');
 				$("#formularioFamiliar").trigger("reset");
 				$("#formularioMasDetalles").trigger("reset");
-				$('#modal-agradecimiento').modal({backdrop: 'static', keyboard: false, show:true});
-				$('#modal-agradecimiento').modal('show');
-				//location.reload();
+				setTimeout(function(){
+					abrirNuevoTab('<?php echo $resultado["url_agradecimiento"];?>');
+				},2000);
+				//$('#modal-agradecimiento').modal({backdrop: 'static', keyboard: false, show:true});
+				//$('#modal-agradecimiento').modal('show');
+				setTimeout(function(){
+					location.reload();
+				},2000);				
 			}
 
 
@@ -825,6 +824,13 @@ h5{
 		event.preventDefault();
 		$('html, body').animate({scrollTop: 0}, 600);
 	});
+	
+	function abrirNuevoTab(url) {
+		// Abrir nuevo tab
+		var win = window.open(url, '_blank');
+		// Cambiar el foco al nuevo tab (punto opcional)
+		win.focus();
+	}
 </script> 
 </html>
 <?php

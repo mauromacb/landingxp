@@ -802,8 +802,11 @@ h5{
 					icon: 'success',
 				});
 				$("#formularioPersonal").trigger("reset");
-				$('#modal-agradecimiento').modal({backdrop: 'static', keyboard: false, show:true});
-				$('#modal-agradecimiento').modal('show');
+				setTimeout(function(){
+					abrirNuevoTab('<?php echo $resultado["url_agradecimiento"];?>');
+				},2000);
+				//$('#modal-agradecimiento').modal({backdrop: 'static', keyboard: false, show:true});
+				//$('#modal-agradecimiento').modal('show');
 			}).fail(function (res) {
 				$(".msg").html(res.b);
 			});
@@ -823,6 +826,12 @@ h5{
 		event.preventDefault();
 		$('html, body').animate({scrollTop: 0}, 600);
 	});
+	function abrirNuevoTab(url) {
+		// Abrir nuevo tab
+		var win = window.open(url, '_blank');
+		// Cambiar el foco al nuevo tab (punto opcional)
+		win.focus();
+	}
 </script> 
 </html>
 <?php
